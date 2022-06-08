@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  display: grid;
+  background-image: url('https://phonoteka.org/uploads/posts/2021-05/1620176966_36-phonoteka_org-p-foni-dlya-slaidera-saita-40.jpg');
 }
 
 .App-logo {
@@ -35,4 +37,7 @@
   to {
     transform: rotate(360deg);
   }
+}
+.error{
+  color: red;
 }
