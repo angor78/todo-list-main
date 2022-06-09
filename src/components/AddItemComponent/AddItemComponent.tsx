@@ -35,6 +35,7 @@ export const AddItemComponent = (props: addItemComponentPropsType) => {
       <Flex alignItems={'center'}>
         <Input size='sm'
                value={title}
+               color={"teal.500"}
                onChange={onChangeHandler}
                onKeyPress={onKeyPressHandler}
                placeholder={error ? error : 'Add some...'}
