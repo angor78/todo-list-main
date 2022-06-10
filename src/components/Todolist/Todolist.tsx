@@ -70,10 +70,10 @@ export function Todolist(props: PropsType) {
             props.dispatch(changeTitleTaskAC(t.id, newTitle, props.id))
           }
 
-          return <Box p='3' mt='2' mb='2' fontSize='18px' color={'gray.500'}  bgColor={'whiteAlpha.800'} borderRadius={5} listStyleType={'none'} textAlign={'right'}>
+          return <Box p='3' mt='2' mb='2' fontSize='18px' color={'gray.500'}  bgColor={'teal.100'} borderRadius={5} listStyleType={'none'} textAlign={'right'} >
             <li key={t.id} className={t.isDone ? "is-done" : ""}>
               {/*<input type="checkbox" onChange={onChangeHandler} checked={t.isDone}/>*/}
-              <Checkbox onChange={onChangeHandler} defaultChecked={t.isDone} colorScheme='teal' float={'left'} mr={'5'}/>
+              <Checkbox onChange={onChangeHandler} defaultChecked={t.isDone} colorScheme='teal' float={'left'} mr={'5'} borderColor={'teal.500'}/>
               <EditableSpan title={t.title} onChangeTitle={onChangeTitleTask} />...
               <EditIcon mr='10'/>
               <DeleteIcon onClick={onClickHandler} ml='3' color={"red.200"} float={'right'} mr={'3'} cursor='pointer'/>

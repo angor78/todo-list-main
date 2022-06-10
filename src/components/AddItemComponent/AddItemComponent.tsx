@@ -34,6 +34,7 @@ export const AddItemComponent = (props: addItemComponentPropsType) => {
     <div>
       <Flex alignItems={'center'}>
         <Input size='sm'
+               focusBorderColor={'teal.500'}
                value={title}
                color={"teal.500"}
                onChange={onChangeHandler}
