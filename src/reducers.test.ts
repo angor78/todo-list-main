@@ -1,5 +1,5 @@
 import {v1} from "uuid";
-import {addTaskAC, changeFilterAC, changeTitleTaskAC, reducer, removeTaskAC} from "./reducers";
+import {addTaskAC, changeFilterAC, changeTitleTaskAC, changeTodolistTitleAC, reducer, removeTaskAC} from "./reducers";
 import {StateType} from "./App";
 
 
@@ -105,4 +105,29 @@ test('Should be change filter', () => {
   }
   let endState = reducer(startState, changeFilterAC('active', todolistId1))
   expect(endState.todolists[0].filter).toBe('active')
+})
+test('Should be change todolist title', () => {
+  let todolistId1 = v1();
+  let todolistId2 = v1();
+
+  let startState: StateType = {
+    todolists: [
+      {id: todolistId1, title: "What to learn", filter: "all"},
+      {id: todolistId2, title: "What to buy", filter: "all"},
+    ],
+    tasks: {
+      [todolistId1]: [
+        {id: v1(), title: "HTML&CSS", isDone: true},
+        {id: v1(), title: "JS", isDone: true},
+        {id: v1(), title: "React", isDone: false},
+        {id: v1(), title: "Redux", isDone: false},
+      ],
+      [todolistId2]: [
+        {id: v1(), title: "Milk", isDone: true},
+        {id: v1(), title: "React Book", isDone: true},
+      ]
+    }
+  }
+  let endState = reducer(startState, changeTodolistTitleAC('Active', todolistId1))
+  expect(endState.todolists[0].title).toBe('Active')
 })
