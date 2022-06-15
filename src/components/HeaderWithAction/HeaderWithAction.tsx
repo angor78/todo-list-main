@@ -50,7 +50,7 @@ export default function HeaderWithAction(props: HeaderWithActionType) {
           />
           <HStack spacing={8} alignItems={'center'}>
             <Box>
-              <Heading size='lg' fontSize='28px' color={"teal.500"}><CheckCircleIcon/> Todolist</Heading>
+              <Heading size='lg' fontSize='28px' color={"teal.500"}><CheckCircleIcon mb={"2"}/> Todolist</Heading>
 
             </Box>
             <HStack
