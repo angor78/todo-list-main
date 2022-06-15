@@ -4,8 +4,7 @@ import {v1} from "uuid";
 export const reducer = (state: StateType, action: ActionType): StateType => {
   switch (action.type) {
     case 'REMOVE-TASK':
-      state.tasks[action.todolistId] = state.tasks[action.todolistId].filter(t => t.id !== action.id)
-      return {...state}
+      return {...state, tasks:{...state.tasks,[action.todolistId]:state.tasks[action.todolistId].filter(t => t.id !== action.id)}}
     case 'ADD-TASK':
       let newTasks = {
         ...state.tasks,
