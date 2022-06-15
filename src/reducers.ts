@@ -23,7 +23,8 @@ export const reducer = (state: StateType, action: ActionType): StateType => {
       todolists:state.todolists.map(el=>el.id===action.todolistId?{...el,title:action.newTitle}:el)}
     case 'ADD-TDL':
       let todolist: TodolistType = {id: v1(), title: action.title, filter: "all"};
-      return {todolists: [todolist, ...state.todolists], tasks: {[todolist.id]: [], ...state.tasks}}
+      return {...state,
+        todolists: [todolist, ...state.todolists], tasks: {[todolist.id]: [], ...state.tasks}}
     case 'REMOVE-TDL':
       state.todolists = (state.todolists.filter(tl => tl.id !== action.id));
       delete state.tasks[action.id];
