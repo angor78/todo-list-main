@@ -19,11 +19,8 @@ export const reducer = (state: StateType, action: ActionType): StateType => {
       return {...state,
         todolists:state.todolists.map(el=>el.id===action.todolistId?{...el,filter:action.value}:el)}
     case 'CHANGE-TDL-TITLE':
-      let findedTDL = state.todolists.find(tl => tl.id === action.todolistId);
-      if (findedTDL) {
-        findedTDL.title = action.newTitle;
-      }
-      return {...state}
+      return {...state,
+      todolists:state.todolists.map(el=>el.id===action.todolistId?{...el,title:action.newTitle}:el)}
     case 'ADD-TDL':
       let todolist: TodolistType = {id: v1(), title: action.title, filter: "all"};
       return {todolists: [todolist, ...state.todolists], tasks: {[todolist.id]: [], ...state.tasks}}
