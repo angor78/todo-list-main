@@ -30,11 +30,8 @@ export const reducer = (state: StateType, action: ActionType): StateType => {
       delete state.tasks[action.id];
       return {...state, todolists:todolistCopy}
     case 'CHANGE-TASK-STATUS':
-      let task = state.tasks[action.todolistId].find(t => t.id === action.id)
-      if (task) {
-        task.isDone = action.isDone
-      }
-      return {...state}
+      return {...state,
+      tasks:{...state.tasks,[action.todolistId]:state.tasks[action.todolistId].map(el=>el.id===action.id?{...el,isDone:action.isDone}:el)}}
     default:
       return state
   }
