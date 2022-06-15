@@ -6,11 +6,9 @@ export const reducer = (state: StateType, action: ActionType): StateType => {
     case 'REMOVE-TASK':
       return {...state, tasks:{...state.tasks,[action.todolistId]:state.tasks[action.todolistId].filter(t => t.id !== action.id)}}
     case 'ADD-TASK':
-      let newTasks = {
-        ...state.tasks,
-        [action.todolistId]: [{id: v1(), title: action.title, isDone: false}, ...state.tasks[action.todolistId]]
-      }
-      return {todolists: [...state.todolists], tasks: newTasks}
+      let newTask = {id: v1(), title: action.title, isDone: false}
+      return {...state,
+      tasks:{...state.tasks,[action.todolistId]:[newTask,...state.tasks[action.todolistId]]}}
     case 'CHANGE-TITLE-TASK':
       return {...state,
         tasks:{...state.tasks,
