@@ -12,11 +12,9 @@ export const reducer = (state: StateType, action: ActionType): StateType => {
       }
       return {todolists: [...state.todolists], tasks: newTasks}
     case 'CHANGE-TITLE-TASK':
-      let findedTask = state.tasks[action.todolistId].find(t => t.id === action.id);
-      if (findedTask) {
-        findedTask.title = action.newTitle;
-      }
-      return {...state}
+      return {...state,
+        tasks:{...state.tasks,
+          [action.todolistId]: state.tasks[action.todolistId].map(el=>el.id===action.id?{...el,title:action.newTitle}:el)}}
     case 'CHANGE-FILTER':
       let todolistForChange = state.todolists.find(tl => tl.id === action.todolistId);
       if (todolistForChange) {
