@@ -1,4 +1,4 @@
-import { FilterValuesType, StateType, TodolistType} from "./App";
+import { FilterValuesType, StateType, TodolistType} from "../App";
 import {v1} from "uuid";
 
 export const reducer = (state: StateType, action: ActionType): StateType => {

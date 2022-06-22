@@ -7,13 +7,13 @@ import {
   changeTodolistTitleAC,
   reducer,
   removeTaskAC, removeTodolistAC
-} from "./reducers";
-import {StateType} from "./App";
+} from "./reducer";
+import {StateType} from "../App";
 
 
 test('Should be add task', () => {
-  let todolistId1 = v1();
-  let todolistId2 = v1();
+ const todolistId1 = v1();
+ const todolistId2 = v1();
 
   let startState: StateType = {
     todolists: [

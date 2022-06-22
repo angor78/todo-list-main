@@ -4,7 +4,7 @@ import {Todolist} from './components/Todolist/Todolist';
 import {v1} from 'uuid';
 import {Box, ChakraProvider} from "@chakra-ui/react"
 import HeaderWithAction from "./components/HeaderWithAction/HeaderWithAction";
-import {addTodolistAC, reducer} from "./reducers";
+import {addTodolistAC, reducer} from "./reducers/reducer";
 
 
 export type FilterValuesType = "all" | "active" | "completed";
@@ -27,6 +27,7 @@ export type StateType = {
 }
 
 function App() {
+
   let todolistId1 = v1();
   let todolistId2 = v1();
 

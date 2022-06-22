@@ -11,7 +11,7 @@ import {
   changeTitleTaskAC,
   changeTodolistTitleAC,
   removeTaskAC, removeTodolistAC
-} from "../../reducers";
+} from "../../reducers/reducer";
 
 
 
