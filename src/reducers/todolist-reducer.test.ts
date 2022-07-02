@@ -6,7 +6,7 @@ import {
   removeTodolistAC,
   todolistReducer
 } from "./todolist-reducer";
-import {TodolistType} from "../App";
+import {TodolistType} from "../AppWithReducers";
 
 let todolistId1: string
 let todolistId2: string
@@ -30,6 +30,8 @@ test('Should be CHANGE_TODOLIST_FILTER', () => {
 test('Should be ADD_TODOLIST', () => {
   let endState = todolistReducer(startState, addTodolistAC('111'))
   expect(endState.length).toBe(3)
+  console.log(endState)
+  expect(endState[2].title).toBe('111')
 })
 test('Should be REMOVE_TODOLIST', () => {
   let endState = todolistReducer(startState, removeTodolistAC(todolistId1))
