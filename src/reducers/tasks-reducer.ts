@@ -1,6 +1,6 @@
 import {v1} from "uuid";
 import {ADD_TODOLIST, AddTodolistACType, REMOVE_TODOLIST, RemoveTodolistACType} from "./todolist-reducer";
-import {AllTasksType, TaskType} from "../AppWithReducers";
+import  {AllTasksType, TaskType} from "../AppWithRedux";
 
 
 const ADD_TASK = "ADD-TASK"
@@ -8,8 +8,8 @@ const REMOVE_TASK = 'REMOVE-TASK'
 const CHANGE_TASK_STATUS = 'CHANGE-TASK-STATUS'
 const CHANGE_TASK_TITLE = 'CHANGE_TASK_TITLE'
 
-let todolistId1 = v1();
-let todolistId2 = v1();
+export let todolistId1 = v1();
+export let todolistId2 = v1();
 
 const initialState = {
   [todolistId1]: [

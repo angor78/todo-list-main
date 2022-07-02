@@ -1,11 +1,11 @@
-import React, {useReducer} from 'react';
+import React from 'react';
 import './App.css';
 import {Todolist} from './components/Todolist/Todolist';
-import {v1} from 'uuid';
 import {Box, ChakraProvider} from "@chakra-ui/react"
 import HeaderWithAction from "./components/HeaderWithAction/HeaderWithAction";
-import {tasksReducer} from "./reducers/tasks-reducer";
-import {addTodolistAC, todolistReducer} from "./reducers/todolist-reducer";
+import {addTodolistAC} from "./reducers/todolist-reducer";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootStateType} from "./state/store";
 
 
 export type FilterValuesType = "all" | "active" | "completed";
@@ -23,37 +23,15 @@ export type AllTasksType = {
   [key: string]: Array<TaskType>
 }
 
-function AppWithReducers() {
+function AppWithRedux() {
 
-  let todolistId1 = v1();
-  let todolistId2 = v1();
-
-  let [todolists, dispatchTodolist] = useReducer(todolistReducer,
-    [
-      {id: v1(), title: "What to learn", filter: "all"},
-      {id: v1(), title: "What to buy", filter: "all"},
-    ])
-
-  let [tasks, dispatchTasks] = useReducer(tasksReducer, {
-    [todolists[0].id]:
-      [
-        {id: v1(), title: "HTML&CSS", isDone: true},
-        {id: v1(), title: "JS", isDone: true},
-        {id: v1(), title: "React", isDone: false},
-        {id: v1(), title: "Redux", isDone: false},
-      ],
-    [todolists[1].id]:
-      [
-        {id: v1(), title: "Milk", isDone: true},
-        {id: v1(), title: "React Book", isDone: true},
-      ]
-  }as AllTasksType)
-
+  const todolists = useSelector<AppRootStateType, Array<TodolistType>>(state => state.todolists)
+  const tasks = useSelector<AppRootStateType,AllTasksType>(state => state.tasks)
+  const dispatch = useDispatch()
 
   function addTodolist(newTitle: string) {
     let action = addTodolistAC(newTitle)
-    dispatchTasks(action)
-    dispatchTodolist(action)
+    dispatch(action)
   }
 
   return (
@@ -66,13 +44,14 @@ function AppWithReducers() {
             let tasksForTodolist = allTodolistTasks;
 
             if (tl.filter === "active") {
-              tasksForTodolist = allTodolistTasks.filter((t:TaskType) => !t.isDone);
+              tasksForTodolist = allTodolistTasks.filter((t: TaskType) => !t.isDone);
             }
             if (tl.filter === "completed") {
-              tasksForTodolist = allTodolistTasks.filter((t:TaskType) => t.isDone);
+              tasksForTodolist = allTodolistTasks.filter((t: TaskType) => t.isDone);
             }
 
-            return <Box minWidth={'350'}
+            return <Box key={tl.id}
+                        minWidth={'350'}
                         display={"flex"}
                         overflow='hidden'
                         padding={10}
@@ -82,8 +61,7 @@ function AppWithReducers() {
               title={tl.title}
               tasks={tasksForTodolist}
               filter={tl.filter}
-              dispatchTodolist={dispatchTodolist}
-              dispatchTasks={dispatchTasks}
+              dispatch={dispatch}
             />
             </Box>
           })
@@ -92,7 +70,6 @@ function AppWithReducers() {
       </div>
     </ChakraProvider>
   )
-
 }
 
-export default AppWithReducers;
+export default AppWithRedux;
