@@ -8,7 +8,9 @@ import {
 } from "./todolist-reducer";
 import {TodolistType} from "../App";
 
+beforeEach(()=>{
 
+})
 
 test('Should be CHANGE_TODOLIST_FILTER',()=>{
   const todolistId1 = v1();
