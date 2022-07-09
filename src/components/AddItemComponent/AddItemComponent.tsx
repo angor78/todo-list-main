@@ -5,7 +5,8 @@ export type addItemComponentPropsType = {
   addItem: (newTitle: string) => void
 
 }
-export const AddItemComponent = (props: addItemComponentPropsType) => {
+export const AddItemComponent = React.memo((props: addItemComponentPropsType) => {
+  console.log('AddItemComponent called')
   let [title, setTitle] = useState("")
   let [error, setError] = useState<string | null>(null)
 
@@ -14,17 +15,23 @@ export const AddItemComponent = (props: addItemComponentPropsType) => {
     if (newTitle !== "") {
       props.addItem(newTitle);
       setTitle("");
-    } else {
+    }
+    if (newTitle === "") {
       setError("Title is required");
     }
+
   }
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.currentTarget.value)
+    if (e) {
+      setTitle(e.currentTarget.value)
+    }
   }
 
   const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-    setError(null);
+    if (error !== null) {
+      setError(null);
+    }
     if (e.charCode === 13) {
       addItem();
     }
@@ -53,4 +60,4 @@ export const AddItemComponent = (props: addItemComponentPropsType) => {
       </Flex>
     </div>
   )
-}
+})
