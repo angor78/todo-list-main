@@ -1,4 +1,4 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, useCallback} from 'react';
 import {AddItemComponent} from "../AddItemComponent/AddItemComponent";
 import {EditableSpan} from "../EditableSpan/EditableSpan";
 import {Box, Button, Checkbox, Heading} from "@chakra-ui/react";
@@ -18,7 +18,7 @@ import {
 } from "../../reducers/tasks-reducer";
 import {FilterValuesType, TaskType} from "../../AppWithRedux";
 
-type ActionTypeForTodolists = TodolistActionType|TasksActionType
+type ActionTypeForTodolists = TodolistActionType | TasksActionType
 
 type PropsType = {
   id: string
@@ -28,22 +28,28 @@ type PropsType = {
   dispatch: (action: ActionTypeForTodolists) => void
 }
 
-export function Todolist(props: PropsType) {
-
+export const Todolist = React.memo((props: PropsType) => {
+  console.log("Todolist called")
 
   const removeTodolist = () => props.dispatch(removeTodolistAC(props.id))
-
-  const onAllClickHandler = () => props.dispatch(changeTodolistFilterAC(props.id, "all"));
-  const onActiveClickHandler = () => props.dispatch(changeTodolistFilterAC(props.id, "active"));
-  const onCompletedClickHandler = () => props.dispatch(changeTodolistFilterAC(props.id, "completed",));
-
-  function addTask(newTitle: string) {
-    props.dispatch(addTaskAC(props.id, newTitle ))
+  let tasksForTodolist = props.tasks
+  if (props.filter === "active") {
+    tasksForTodolist = props.tasks.filter((t: TaskType) => !t.isDone);
   }
+  if (props.filter === "completed") {
+    tasksForTodolist = props.tasks.filter((t: TaskType) => t.isDone);
+  }
+  const onAllClickHandler = useCallback(() => props.dispatch(changeTodolistFilterAC(props.id, "all")),[props.dispatch, props.id]) ;
+  const onActiveClickHandler = useCallback(() => props.dispatch(changeTodolistFilterAC(props.id, "active")),[props.dispatch, props.id])
+  const onCompletedClickHandler =useCallback(() => props.dispatch(changeTodolistFilterAC(props.id, "completed",)),[props.dispatch, props.id])
 
-  function onChangeTodolistTitle(newTitle: string) {
+  const addTask = useCallback((newTitle: string) => {
+    props.dispatch(addTaskAC(props.id, newTitle))
+  }, [props.dispatch, props.id])
+
+  const onChangeTodolistTitle=useCallback((newTitle: string)=> {
     props.dispatch(changeTodolistTitleAC(props.id, newTitle))
-  }
+  },[props.id])
 
   return <div>
     <Box minW='200'>
@@ -64,18 +70,19 @@ export function Todolist(props: PropsType) {
       </Box>
 
       <ul>
-        {props.tasks.map(t => {
-          const onClickHandler = () => props.dispatch(removeTaskAC(props.id, t.id ))
+        {tasksForTodolist.map(t => {
+          const onClickHandler = () => props.dispatch(removeTaskAC(props.id, t.id))
           const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
             let newIsDoneValue = e.currentTarget.checked;
-            props.dispatch(changeTaskStatusAC(props.id, t.id , newIsDoneValue));
+            props.dispatch(changeTaskStatusAC(props.id, t.id, newIsDoneValue));
           }
 
           function onChangeTitleTask(newTitle: string) {
             props.dispatch(changeTaskTitleAC(props.id, t.id, newTitle))
           }
 
-          return <Box key={t.id} p='3' mt='2' mb='2' fontSize='18px' color={'gray.500'} bgColor={'teal.100'} borderRadius={5}
+          return <Box key={t.id} p='3' mt='2' mb='2' fontSize='18px' color={'gray.500'} bgColor={'teal.100'}
+                      borderRadius={5}
                       listStyleType={'none'} textAlign={'right'}>
             <li key={t.id} className={t.isDone ? "is-done" : ""}>
               {/*<input type="checkbox" onChange={onChangeHandler} checked={t.isDone}/>*/}
@@ -94,4 +101,4 @@ export function Todolist(props: PropsType) {
       </Box>
     </Box>
   </div>
-}
+})
