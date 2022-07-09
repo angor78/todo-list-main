@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import './App.css';
 import {Todolist} from './components/Todolist/Todolist';
 import {Box, ChakraProvider} from "@chakra-ui/react"
@@ -29,10 +29,10 @@ function AppWithRedux() {
   const tasks = useSelector<AppRootStateType,AllTasksType>(state => state.tasks)
   const dispatch = useDispatch()
 
-  function addTodolist(newTitle: string) {
+  const addTodolist=useCallback((newTitle: string)=> {
     let action = addTodolistAC(newTitle)
     dispatch(action)
-  }
+  },[dispatch])
 
   return (
     <ChakraProvider>
@@ -40,15 +40,6 @@ function AppWithRedux() {
         <HeaderWithAction addTodolist={addTodolist}/>
         <Box alignItems={'top'} display={"flex"} flexWrap={'wrap'} justifyContent={'center'} minHeight={800}>
           {todolists.map(tl => {
-            let allTodolistTasks = tasks[tl.id];
-            let tasksForTodolist = allTodolistTasks;
-
-            if (tl.filter === "active") {
-              tasksForTodolist = allTodolistTasks.filter((t: TaskType) => !t.isDone);
-            }
-            if (tl.filter === "completed") {
-              tasksForTodolist = allTodolistTasks.filter((t: TaskType) => t.isDone);
-            }
 
             return <Box key={tl.id}
                         minWidth={'350'}
@@ -59,7 +50,7 @@ function AppWithRedux() {
               key={tl.id}
               id={tl.id}
               title={tl.title}
-              tasks={tasksForTodolist}
+              tasks={tasks[tl.id]}
               filter={tl.filter}
               dispatch={dispatch}
             />
