@@ -7,8 +7,13 @@ module.exports = {
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
-    "@storybook/preset-create-react-app"
+    "@storybook/preset-create-react-app",
+    // '@snek-at/storybook-addon-chakra-ui',
+    "@chakra-ui/storybook-addon"
   ],
+  'features': {
+    'emotionAlias': false,
+  },
   "framework": "@storybook/react",
   "core": {
     "builder": "@storybook/builder-webpack5"
