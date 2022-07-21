@@ -21,36 +21,44 @@ export const GetTodolists = (props: any) => {
 
 export const CreateTodolist = (props: any) => {
   const [state, setState] = useState<any>(null)
-  useEffect(() => {
-    TodolistsAPI.createTodolist('Yo')
+  const createTodolist = (todolistId: string, taskId: string, title: string) => {
+    TodolistsAPI.createTodolist(title)
       .then(data => {
         setState(data.data)
       })
-  }, [])
-  return <div>{JSON.stringify(state)}</div>
+  }
+  return <Display state={state}
+                  setState={setState}
+                  name={'createTodolist'}
+                  action={createTodolist}/>
 }
 
 export const DeleteTodolist = (props: any) => {
   const [state, setState] = useState<any>(null)
-  useEffect(() => {
-    const todolistId = '02f3484a-1da9-43fa-af5d-ba20b9033214'
+  const deleteTodolist = (todolistId: string, taskId: string, title: string) => {
     TodolistsAPI.deleteTodolist(todolistId)
       .then(data => {
         setState(data.data)
       })
-  }, [])
-  return <div>{JSON.stringify(state)}</div>
+  }
+  return <Display state={state}
+                  setState={setState}
+                  name={'deleteTodolist'}
+                  action={deleteTodolist}/>
 }
 
 export const UpdateTodolist = (props: any) => {
   const [state, setState] = useState<any>(null)
-  useEffect(() => {
-    const todolistId = 'f7d91822-39c3-4a5d-b50b-fd7f853a0297'
-    TodolistsAPI.updateTodolist(todolistId, '1111').then(data => {
+  const updateTodolist = (todolistId: string, taskId: string, title: string) => {
+    // const todolistId = 'f7d91822-39c3-4a5d-b50b-fd7f853a0297'
+    TodolistsAPI.updateTodolist(todolistId, title).then(data => {
       setState(data.data)
     })
-  }, [])
-  return <div>{JSON.stringify(state)}</div>
+  }
+  return <Display state={state}
+                  setState={setState}
+                  name={'updateTodolist'}
+                  action={updateTodolist}/>
 }
 
 
@@ -58,24 +66,24 @@ export const GetTasks = (props: any) => {
   const [state, setState] = useState<any>(null)
   useEffect(() => {
     const todolistId = 'f7d91822-39c3-4a5d-b50b-fd7f853a0297'
-    TodolistsAPI.getTasks(todolistId)
+    TodolistsAPI.getTasks(props.todolistId ? props.todolistId : todolistId)
       .then(data => {
         setState(data.data)
 
       })
-  }, [])
+  }, [props.todolistId])
   return <div>{JSON.stringify(state)}</div>
 }
 
 export const CreateTask = (props: any) => {
   const [state, setState] = useState<any>(null)
-  const createTask= (todolistId:string, title:string) => {
+  const createTask = (todolistId: string, taskId: string, title: string) => {
     TodolistsAPI.createTask(todolistId, title)
       .then(data => {
         setState(data.data)
       })
   }
-  return <DisplayTasks state={state}
+  return <Display state={state}
                   setState={setState}
                   name={'createTask'}
                   action={createTask}/>
@@ -85,13 +93,13 @@ export const DeleteTask = (props: any) => {
   const [state, setState] = useState<any>(null)
 
 
-  const deleteTask = (todolistId: string, taskId: string) => {
+  const deleteTask = (todolistId: string, taskId: string, title: string) => {
     TodolistsAPI.deleteTask(todolistId, taskId)
       .then(data => {
         setState(data.data)
       })
   }
-  return <DisplayTasks state={state}
+  return <Display state={state}
                   setState={setState}
                   name={'deleteTask'}
                   action={deleteTask}/>
@@ -106,19 +114,17 @@ export const UpdateTask = (props: any) => {
       })
   }
 
-  return <DisplayTasks state={state}
+  return <Display state={state}
                   setState={setState}
                   name={'update task'}
                   action={updateTask}/>
 }
 
 
-
-
-const DisplayTasks = (props: any) => {
-  const [todolistId, setTodolistId] = useState<any>('')
-  const [taskId, setTaskId] = useState<any>('')
-  const [title, setTitle] = useState<any>('')
+const Display = (props: any) => {
+  const [todolistId, setTodolistId] = useState<any>('f7d91822-39c3-4a5d-b50b-fd7f853a0297')
+  const [taskId, setTaskId] = useState<any>('taskId')
+  const [title, setTitle] = useState<any>('title')
 
   const onClickHandler = () => {
     props.action(todolistId, taskId, title)
@@ -129,12 +135,20 @@ const DisplayTasks = (props: any) => {
         <Badge colorScheme={'red'}>Response</Badge>
         {JSON.stringify(props.state)}
       </Box>
-
-      <Box border={'1px'} borderColor={'teal'} borderRadius={'lg'} p={'2'}>
-        <Badge colorScheme={'teal'}>Tasks</Badge>
-        <GetTasks />
+      <Box display={'flex'} flexDirection={'row'} fontSize={'12'}>
+        <Box w={'500px'} border={'1px'} borderColor={'teal'} borderRadius={'lg'} p={'2'} mr={'5'}>
+          <Badge colorScheme={'teal'}>Todolists</Badge>
+          <GetTodolists/>
+        </Box>
+        <Box w={'500px'}
+             border={'1px'}
+             borderColor={'teal'}
+             borderRadius={'lg'}
+             p={'2'}>
+          <Badge colorScheme={'teal'}>Tasks</Badge>
+          <GetTasks todolistId={todolistId}/>
+        </Box>
       </Box>
-
       <Badge colorScheme={'teal'}>todolistId</Badge>
       <Box>
         <Input type="text"
