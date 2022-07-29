@@ -24,17 +24,18 @@ type ResponseType<D = {}> = {
   data: D
 }
 export type TaskType = {
-  id: string
-  title: string
+  addedDate: string
+  deadline: string | null
   description: string | null
-  todoListId: string
+  id: string
   order: number
-  status: number
   priority: number
   startDate: string | null
-  deadline: string | null
-  addedDate: string
+  status: number
+  title: string
+  todoListId: string
 }
+
 
 export type GetTasksResponseType = {
   items: Array<TaskType>
@@ -49,17 +50,6 @@ export type ModelType = {
   deadline: string | null
   status: number
 }
-
-// type UpdateTaskType = {
-//   title: string
-//   description: string
-//   completed: boolean
-//   status: number
-//   priority: number
-//   startDate: string
-//   deadline: string
-// }
-
 
 export const TodolistsAPI = {
   //Todolists

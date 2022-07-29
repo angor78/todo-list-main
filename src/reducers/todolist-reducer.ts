@@ -2,7 +2,6 @@ import {v1} from "uuid";
 import {FilterValuesType} from "../AppWithRedux";
 import {TodolistsAPI, TodolistsType} from "../api/todolists-api";
 import {Dispatch} from "redux";
-import {AppRootStateType} from "../state/store";
 
 const CHANGE_TODOLIST_FILTER = 'CHANGE-TODOLIST-FILTER'
 const CHANGE_TODOLIST_TITLE = 'CHANGE-TODOLIST-TITLE'

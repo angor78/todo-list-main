@@ -56,10 +56,21 @@ beforeEach(() => {
 
 
 test('Should be ADD_TASK', () => {
-  let action = addTaskAC(todolistId1, 'New')
+  let action = addTaskAC({
+    id: v1(),
+    title: "string4",
+    description: null,
+    todoListId: todolistId1,
+    order: 1,
+    status: 0,
+    priority: 1,
+    startDate: null,
+    deadline: null,
+    addedDate: "string"
+  })
   let endState = tasksReducer(startState, action)
   expect(endState[todolistId1].length).toBe(3)
-  expect(endState[todolistId1][0].title).toBe('New')
+  expect(endState[todolistId1][0].title).toBe('string4')
 })
 
 test('Should be REMOVE_TASK', () => {

@@ -26,7 +26,7 @@ function AppWithRedux() {
 
   useEffect(() => {
     dispatch(fetchTodolists())
-  }, [])
+  }, [dispatch])
 
   return (
     <ChakraProvider>
@@ -46,7 +46,7 @@ function AppWithRedux() {
                 title={tl.title}
                 tasks={tasks[tl.id]}
                 filter={tl.filter}
-                dispatch={dispatch}
+                // dispatch={dispatch}
               />
             </Box>
           })

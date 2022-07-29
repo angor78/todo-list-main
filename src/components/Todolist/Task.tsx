@@ -3,7 +3,7 @@ import {Box, Checkbox} from "@chakra-ui/react";
 import {EditableSpan} from "../EditableSpan/EditableSpan";
 import {DeleteIcon, EditIcon} from "@chakra-ui/icons";
 import {changeStatusTask, removeTask, updateTask} from "../../reducers/tasks-reducer";
-import {ActionTypeForTodolists} from "./Todolist";
+import {useDispatch} from "react-redux";
 
 
 type TaskPropsType = {
@@ -11,19 +11,19 @@ type TaskPropsType = {
   taskId: string
   status: number
   title: string
-  dispatch: (action: ActionTypeForTodolists | any) => void
 }
 
 
 export const Task = React.memo((props: TaskPropsType) => {
-  const onClickHandler = () => props.dispatch(removeTask(props.id, props.taskId))
+  const dispatch = useDispatch<any>()
+  const onClickHandler = () => dispatch(removeTask(props.id, props.taskId))
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     let newIsDoneValue = e.currentTarget.checked ? 1 : 0;
-    props.dispatch(changeStatusTask(props.id, props.taskId, newIsDoneValue));
+    dispatch(changeStatusTask(props.id, props.taskId, newIsDoneValue));
   }
   const onChangeTitleTask = useCallback((newTitle: string) => {
-    props.dispatch(updateTask(props.id, props.taskId, newTitle))
-  }, [props.taskId, props.dispatch, props.id])
+    dispatch(updateTask(props.id, props.taskId, newTitle))
+  }, [props.taskId, dispatch, props.id])
 
   return <Box p='3' mt='2' mb='2' fontSize='18px' color={'gray.500'} bgColor={'teal.100'}
               borderRadius={5}
