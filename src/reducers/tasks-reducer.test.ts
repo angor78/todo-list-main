@@ -92,7 +92,7 @@ test('Should be CHANGE_TASK_TITLE', () => {
 
 test('new array should be added when new todolist is added', () => {
 
-  const action = addTodolistAC('new todolist')
+  const action = addTodolistAC('new todolist','response')
   const endState = tasksReducer(startState, action)
   const keys = Object.keys(endState)
   const newKey = keys.find(k => k !== todolistId1 && k !== todolistId2)
@@ -107,7 +107,7 @@ test('ids should be equals', () => {
   const startTasksState: AllTasksType = {}
   const startTodolistsState: Array<TodolistDomainType> = []
 
-  const action = addTodolistAC('new todolist')
+  const action = addTodolistAC('new todolist','response')
 
   const endTasksState = tasksReducer(startTasksState, action)
   const endTodolistsState = todolistReducer(startTodolistsState, action)

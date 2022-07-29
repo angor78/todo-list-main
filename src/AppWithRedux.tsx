@@ -3,7 +3,7 @@ import './App.css';
 import {Todolist} from './components/Todolist/Todolist';
 import {Box, ChakraProvider} from "@chakra-ui/react"
 import HeaderWithAction from "./components/HeaderWithAction/HeaderWithAction";
-import {addTodolistAC, fetchTodolists, TodolistDomainType} from "./reducers/todolist-reducer";
+import {createTodolist, fetchTodolists, TodolistDomainType} from "./reducers/todolist-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
 import {TaskType} from "./api/todolists-api";
@@ -20,7 +20,7 @@ function AppWithRedux() {
   const dispatch = useDispatch<any>()
 
   const addTodolist = useCallback((newTitle: string) => {
-    let action = addTodolistAC(newTitle)
+    let action = createTodolist(newTitle)
     dispatch(action)
   }, [dispatch])
 
