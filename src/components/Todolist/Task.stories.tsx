@@ -3,8 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import {Task} from "./Task";
 import {Provider, useSelector} from "react-redux";
 import {AppRootStateType, store} from "../../state/store";
-import { TaskType} from "../../AppWithRedux";
-import {todolistId1} from "../../reducers/tasks-reducer";
+import {TaskType} from "../../api/todolists-api";
 
 export default {
   title: 'Components/Task',
@@ -13,11 +12,11 @@ export default {
 } as ComponentMeta<typeof Task>;
 
 const UsingReduxComponent = () => {
-  const task:TaskType = useSelector<AppRootStateType, TaskType>(state => state.tasks[todolistId1][0])
+  const task:TaskType = useSelector<AppRootStateType, TaskType>(state => state.tasks['todolistId1'][0])
   return <Task
     id={'todolistId1'}
     taskId={task.id}
-    isDone={task.isDone}
+    status={task.status}
     title={task.title}
     dispatch={()=>alert()}
   />

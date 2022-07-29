@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {AddItemComponent} from "../AddItemComponent/AddItemComponent";
 import {EditableSpan} from "../EditableSpan/EditableSpan";
 import {Box, Button, Heading} from "@chakra-ui/react";
@@ -10,11 +10,13 @@ import {
   TodolistActionType
 } from "../../reducers/todolist-reducer";
 import {
-  addTaskAC,
+   createTask, fetchTasks,
   TasksActionType
 } from "../../reducers/tasks-reducer";
-import {FilterValuesType, TaskType} from "../../AppWithRedux";
+import {FilterValuesType} from "../../AppWithRedux";
 import {Task} from "./Task";
+import {TaskType} from "../../api/todolists-api";
+import {useDispatch} from "react-redux";
 
 export type ActionTypeForTodolists = TodolistActionType | TasksActionType
 
@@ -23,32 +25,35 @@ type PropsType = {
   title: string
   tasks: Array<TaskType>
   filter: FilterValuesType
-  dispatch: (action: ActionTypeForTodolists) => void
+  dispatch: (action: ActionTypeForTodolists | any) => void
 }
 
 export const Todolist = React.memo((props: PropsType) => {
-  console.log("Todolist called")
+  let dispatch = useDispatch<any>()
 
   const removeTodolist = () => props.dispatch(removeTodolistAC(props.id))
   let tasksForTodolist = props.tasks
   if (props.filter === "active") {
-    tasksForTodolist = props.tasks.filter((t: TaskType) => !t.isDone);
+    tasksForTodolist = props.tasks.filter((t: TaskType) => t.status === 0);
   }
   if (props.filter === "completed") {
-    tasksForTodolist = props.tasks.filter((t: TaskType) => t.isDone);
+    tasksForTodolist = props.tasks.filter((t: TaskType) => t.status === 1);
   }
   const onAllClickHandler = useCallback(() => props.dispatch(changeTodolistFilterAC(props.id, "all")), [props.dispatch, props.id]);
   const onActiveClickHandler = useCallback(() => props.dispatch(changeTodolistFilterAC(props.id, "active")), [props.dispatch, props.id])
   const onCompletedClickHandler = useCallback(() => props.dispatch(changeTodolistFilterAC(props.id, "completed",)), [props.dispatch, props.id])
 
   const addTask = useCallback((newTitle: string) => {
-    props.dispatch(addTaskAC(props.id, newTitle))
+    props.dispatch(createTask(props.id, newTitle))
   }, [props.dispatch, props.id])
 
   const onChangeTodolistTitle = useCallback((newTitle: string) => {
     props.dispatch(changeTodolistTitleAC(props.id, newTitle))
   }, [props.dispatch, props.id])
 
+  useEffect(() => {
+    dispatch(fetchTasks(props.id))
+  }, [])
 
   return <div>
     <Box minW='200'>
@@ -72,7 +77,7 @@ export const Todolist = React.memo((props: PropsType) => {
         return <Task key={t.id}
                      id={props.id}
                      taskId={t.id}
-                     isDone={t.isDone}
+                     status={t.status}
                      title={t.title}
                      dispatch={props.dispatch}/>
       })

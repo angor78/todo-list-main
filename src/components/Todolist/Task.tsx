@@ -2,34 +2,35 @@ import React, {ChangeEvent, useCallback} from 'react';
 import {Box, Checkbox} from "@chakra-ui/react";
 import {EditableSpan} from "../EditableSpan/EditableSpan";
 import {DeleteIcon, EditIcon} from "@chakra-ui/icons";
-import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "../../reducers/tasks-reducer";
+import {changeStatusTask, removeTask, updateTask} from "../../reducers/tasks-reducer";
 import {ActionTypeForTodolists} from "./Todolist";
 
 
 type TaskPropsType = {
   id: string
   taskId: string
-  isDone: boolean
+  status: number
   title: string
-  dispatch: (action: ActionTypeForTodolists) => void
+  dispatch: (action: ActionTypeForTodolists | any) => void
 }
 
 
 export const Task = React.memo((props: TaskPropsType) => {
-  const onClickHandler = () => props.dispatch(removeTaskAC(props.id, props.taskId))
+  const onClickHandler = () => props.dispatch(removeTask(props.id, props.taskId))
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    let newIsDoneValue = e.currentTarget.checked;
-    props.dispatch(changeTaskStatusAC(props.id, props.taskId, newIsDoneValue));
+    let newIsDoneValue = e.currentTarget.checked ? 1 : 0;
+    props.dispatch(changeStatusTask(props.id, props.taskId, newIsDoneValue));
   }
   const onChangeTitleTask = useCallback((newTitle: string) => {
-    props.dispatch(changeTaskTitleAC(props.id, props.taskId, newTitle))
+    props.dispatch(updateTask(props.id, props.taskId, newTitle))
   }, [props.taskId, props.dispatch, props.id])
 
   return <Box p='3' mt='2' mb='2' fontSize='18px' color={'gray.500'} bgColor={'teal.100'}
               borderRadius={5}
-              listStyleType={'none'} textAlign={'right'} className={props.isDone ? "is-done" : ""}>
+              listStyleType={'none'} textAlign={'right'} className={props.status === 1 ? "is-done" : ""}>
 
-    <Checkbox onChange={onChangeHandler} defaultChecked={props.isDone} colorScheme='teal' float={'left'}
+    <Checkbox onChange={onChangeHandler} defaultChecked={props.status !== 0} colorScheme='teal'
+              float={'left'}
               mr={'5'}
               borderColor={'teal.500'}/>
     <EditableSpan title={props.title} onChangeTitle={onChangeTitleTask}/>...
