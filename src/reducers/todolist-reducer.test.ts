@@ -29,7 +29,7 @@ test('Should be CHANGE_TODOLIST_FILTER', () => {
 test('Should be ADD_TODOLIST', () => {
   let endState = todolistReducer(startState, addTodolistAC(startState[0]))
   expect(endState.length).toBe(3)
-  expect(endState[2].title).toBe('What to learn')
+  expect(endState[2].title).toBe('What to buy')
 })
 test('Should be REMOVE_TODOLIST', () => {
   let endState = todolistReducer(startState, removeTodolistAC(todolistId1))

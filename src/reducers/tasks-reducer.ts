@@ -106,7 +106,6 @@ export const setTaskAC = (todolistId: string, tasks: Array<TaskType>) => {
 
 //Thunk
 
-
 export function fetchTasks(todolistId: string): AppThunk {
   return async function (dispatch: DispatchType) {
     const response = await TodolistsAPI.getTasks(todolistId)
@@ -121,19 +120,18 @@ export function removeTask(todolistId: string, taskId: string): AppThunk {
       dispatch(removeTaskAC(todolistId, taskId))
     }
   }
-
 }
 
 export function createTask(todolistId: string, title: string): AppThunk {
   return async function (dispatch: DispatchType) {
+    //fix any?
     let res: any = await TodolistsAPI.createTask(todolistId, title)
-    console.warn(res)
+    let item: TaskType = res.data.data.item
     if (res.data.resultCode === 0) {
-      dispatch(addTaskAC(res.data.data.item))
+      dispatch(addTaskAC(item))
     }
   }
 }
-
 
 export function updateTask(todolistId: string, taskId: string, title: string): AppThunk {
   return async function (dispatch: DispatchType) {
