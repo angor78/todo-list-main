@@ -3,7 +3,7 @@ import {Box, Checkbox} from "@chakra-ui/react";
 import {EditableSpan} from "../EditableSpan/EditableSpan";
 import {DeleteIcon, EditIcon} from "@chakra-ui/icons";
 import {changeStatusTask, removeTask, updateTask} from "../../reducers/tasks-reducer";
-import {useDispatch} from "react-redux";
+import {useAppDispatch} from "../../state/store";
 
 
 type TaskPropsType = {
@@ -15,7 +15,7 @@ type TaskPropsType = {
 
 
 export const Task = React.memo((props: TaskPropsType) => {
-  const dispatch = useDispatch<any>()
+  const dispatch = useAppDispatch()
   const onClickHandler = () => dispatch(removeTask(props.id, props.taskId))
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     let newIsDoneValue = e.currentTarget.checked ? 1 : 0;

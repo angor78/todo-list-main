@@ -13,9 +13,7 @@ import {
 import {FilterValuesType} from "../../AppWithRedux";
 import {Task} from "./Task";
 import {TaskType} from "../../api/todolists-api";
-import {useDispatch} from "react-redux";
-
-// export type ActionTypeForTodolists = TodolistActionType | TasksActionType
+import {useAppDispatch} from "../../state/store";
 
 type PropsType = {
   id: string
@@ -25,7 +23,7 @@ type PropsType = {
 }
 
 export const Todolist = React.memo((props: PropsType) => {
-  let dispatch = useDispatch<any>()
+  let dispatch = useAppDispatch()
 
   const removeTodolist = () => dispatch(deleteTodolist(props.id))
   let tasksForTodolist = props.tasks
@@ -75,7 +73,6 @@ export const Todolist = React.memo((props: PropsType) => {
                      taskId={t.id}
                      status={t.status}
                      title={t.title}
-          // dispatch={dispatch}
         />
       })
       }

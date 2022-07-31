@@ -27,10 +27,9 @@ test('Should be CHANGE_TODOLIST_FILTER', () => {
 })
 
 test('Should be ADD_TODOLIST', () => {
-  let endState = todolistReducer(startState, addTodolistAC('111','response'))
+  let endState = todolistReducer(startState, addTodolistAC(startState[0]))
   expect(endState.length).toBe(3)
-  console.log(endState)
-  expect(endState[2].title).toBe('111')
+  expect(endState[2].title).toBe('What to learn')
 })
 test('Should be REMOVE_TODOLIST', () => {
   let endState = todolistReducer(startState, removeTodolistAC(todolistId1))

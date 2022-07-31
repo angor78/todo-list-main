@@ -8,8 +8,7 @@ import {
 } from "./todolist-reducer";
 import {AllTasksType} from "../AppWithRedux";
 import {TaskType, TodolistsAPI} from "../api/todolists-api";
-import {Dispatch} from "redux";
-import {AppRootStateType} from "../state/store";
+import {AppRootStateType, AppThunk, DispatchType} from "../state/store";
 
 
 const ADD_TASK = "ADD-TASK"
@@ -45,7 +44,7 @@ export const tasksReducer = (state = initialState, action: TasksActionType): All
           {...el, title: action.title} : el)
       }
     case ADD_TODOLIST :
-      return {...state, [action.todolistId]: []}
+      return {...state, [action.todolist.id]: []}
 
     case REMOVE_TODOLIST :
       let copyState = {...state}
@@ -108,67 +107,63 @@ export const setTaskAC = (todolistId: string, tasks: Array<TaskType>) => {
 //Thunk
 
 
-export function fetchTasks(todolistId: string){
-  return async function(dispatch: Dispatch) {
+export function fetchTasks(todolistId: string): AppThunk {
+  return async function (dispatch: DispatchType) {
     const response = await TodolistsAPI.getTasks(todolistId)
     dispatch(setTaskAC(todolistId, response.data.items))
   }
 }
 
-
-// export const fetchTasks = (todolistId: string) => (dispatch: Dispatch) => {
-//   TodolistsAPI.getTasks(todolistId).then(res => {
-//     dispatch(setTaskAC(todolistId, res.data.items))
-//   })
-// }
-
-
-export const removeTask = (todolistId: string, taskId: string) => (dispatch: Dispatch) => {
-  TodolistsAPI.deleteTask(todolistId, taskId).then(res => {
+export function removeTask(todolistId: string, taskId: string): AppThunk {
+  return async function (dispatch: DispatchType) {
+    let res = await TodolistsAPI.deleteTask(todolistId, taskId)
     if (res.data.resultCode === 0) {
       dispatch(removeTaskAC(todolistId, taskId))
     }
-  })
+  }
+
 }
 
-export const createTask = (todolistId: string, title: string) => (dispatch: Dispatch) => {
-  TodolistsAPI.createTask(todolistId, title).then(res => {
+export function createTask(todolistId: string, title: string): AppThunk {
+  return async function (dispatch: DispatchType) {
+    let res: any = await TodolistsAPI.createTask(todolistId, title)
+    console.warn(res)
     if (res.data.resultCode === 0) {
-      // @ts-ignore
-      let task = {...res.data.data.item}
-      console.log(task)
-      dispatch(addTaskAC(task))
+      dispatch(addTaskAC(res.data.data.item))
     }
-  })
+  }
 }
 
-export const updateTask = (todolistId: string, taskId: string, title: string) => (dispatch: Dispatch) => {
-  TodolistsAPI.updateTask(todolistId, taskId, title).then(res => {
+
+export function updateTask(todolistId: string, taskId: string, title: string): AppThunk {
+  return async function (dispatch: DispatchType) {
+    let res = await TodolistsAPI.updateTask(todolistId, taskId, title)
     if (res.data.resultCode === 0) {
       dispatch(changeTaskTitleAC(todolistId, taskId, title))
     }
-  })
+  }
 }
 
-export const changeStatusTask = (todolistId: string, taskId: string, status: number) => (dispatch: Dispatch, getState: () => AppRootStateType) => {
-  const allTasksFromState = getState().tasks
-  const tasksForCurrentTodolist = allTasksFromState[todolistId]
-  const task = tasksForCurrentTodolist.find(t => {
-    return t.id === taskId
-  })
-  if (task) {
-    const model = {
-      title: task.title,
-      startDate: task.startDate,
-      priority: task.priority,
-      description: task.description,
-      deadline: task.deadline,
-      status: status
-    }
-    TodolistsAPI.changeStatus(todolistId, taskId, model).then(res => {
+export function changeStatusTask(todolistId: string, taskId: string, status: number): AppThunk {
+  return async function (dispatch: DispatchType, getState: () => AppRootStateType) {
+    const allTasksFromState = getState().tasks
+    const tasksForCurrentTodolist = allTasksFromState[todolistId]
+    const task = tasksForCurrentTodolist.find(t => {
+      return t.id === taskId
+    })
+    if (task) {
+      const model = {
+        title: task.title,
+        startDate: task.startDate,
+        priority: task.priority,
+        description: task.description,
+        deadline: task.deadline,
+        status: status
+      }
+      let res = await TodolistsAPI.changeStatus(todolistId, taskId, model)
       if (res.data.resultCode === 0) {
         dispatch(changeTaskStatusAC(todolistId, taskId, model.status))
       }
-    })
+    }
   }
 }
