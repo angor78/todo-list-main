@@ -1,12 +1,13 @@
 import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import {Todolist} from './components/Todolist/Todolist';
-import {Box, ChakraProvider} from "@chakra-ui/react"
+import {Box, ChakraProvider, Progress} from "@chakra-ui/react"
 import HeaderWithAction from "./components/HeaderWithAction/HeaderWithAction";
 import {createTodolist, fetchTodolists, TodolistDomainType} from "./reducers/todolist-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
 import {TaskType} from "./api/todolists-api";
+import {RequestStatusType} from "./reducers/app-reducer";
 
 export type FilterValuesType = "all" | "active" | "completed";
 export type AllTasksType = {
@@ -28,10 +29,15 @@ function AppWithRedux() {
     dispatch(fetchTodolists())
   }, [dispatch])
 
+  const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
+
   return (
     <ChakraProvider>
       <div className="App">
         <HeaderWithAction addTodolist={addTodolist}/>
+        {status === 'loading' && <Progress size='xs' isIndeterminate colorScheme={'teal'} mb='30'/>
+        }
+
         <Box alignItems={'top'} display={"flex"} flexWrap={'wrap'} justifyContent={'center'} minHeight={800}>
           {todolists.map(tl => {
 
@@ -46,7 +52,6 @@ function AppWithRedux() {
                 title={tl.title}
                 tasks={tasks[tl.id]}
                 filter={tl.filter}
-                // dispatch={dispatch}
               />
             </Box>
           })

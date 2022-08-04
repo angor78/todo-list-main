@@ -1,7 +1,7 @@
 import {FilterValuesType} from "../AppWithRedux";
 import {TodolistsAPI, TodolistsType} from "../api/todolists-api";
-import {Dispatch} from "redux";
 import {AppThunk, DispatchType} from "../state/store";
+import {setAppStatusAC, SetAppStatusACType} from "./app-reducer";
 
 const CHANGE_TODOLIST_FILTER = 'CHANGE-TODOLIST-FILTER'
 const CHANGE_TODOLIST_TITLE = 'CHANGE-TODOLIST-TITLE'
@@ -50,7 +50,8 @@ export type TodolistActionType =
   AddTodolistACType |
   RemoveTodolistACType |
   ChangeTodolistTitleACType |
-  SetTodolistsACType
+  SetTodolistsACType |
+  SetAppStatusACType
 
 
 //Action
@@ -83,16 +84,20 @@ export const setTodolistsAC = (todolists: Array<TodolistsType>) => {
 //Thunk
 export function fetchTodolists(): AppThunk {
   return async function (dispatch: DispatchType) {
+    dispatch(setAppStatusAC('loading'))
     let res = await TodolistsAPI.getTodolist()
     dispatch(setTodolistsAC(res.data))
+    dispatch(setAppStatusAC('succeeded'))
   }
 }
 
 export function createTodolist(title: string) {
   return async function (dispatch: DispatchType) {
+    dispatch(setAppStatusAC('loading'))
     let res = await TodolistsAPI.createTodolist(title)
     if (res.data.resultCode === 0) {
       dispatch(addTodolistAC(res.data.data.item))
+      dispatch(setAppStatusAC('succeeded'))
     }else{
       console.warn(res.data.messages)
     }
@@ -101,9 +106,11 @@ export function createTodolist(title: string) {
 
 export function deleteTodolist(todolistId: string): AppThunk {
   return async function (dispatch: DispatchType) {
+    dispatch(setAppStatusAC('loading'))
     let res = await TodolistsAPI.deleteTodolist(todolistId)
     if (res.data.resultCode === 0) {
       dispatch(removeTodolistAC(todolistId))
+      dispatch(setAppStatusAC('succeeded'))
     }else{
       console.warn(res.data.messages)
     }
@@ -112,9 +119,11 @@ export function deleteTodolist(todolistId: string): AppThunk {
 
 export function updateTodolist(todolistId: string, title: string): AppThunk {
   return async function (dispatch: DispatchType) {
+    dispatch(setAppStatusAC('loading'))
     let res = await TodolistsAPI.updateTodolist(todolistId, title)
     if(res.data.resultCode===0){
       dispatch(changeTodolistTitleAC(todolistId,title))
+      dispatch(setAppStatusAC('succeeded'))
     }else{
       console.warn(res.data.messages)
     }
