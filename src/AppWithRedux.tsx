@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
 import {TaskType} from "./api/todolists-api";
 import {RequestStatusType} from "./reducers/app-reducer";
+import {ErrorAlert} from "./components/ErrorAlert";
 
 export type FilterValuesType = "all" | "active" | "completed";
 export type AllTasksType = {
@@ -30,12 +31,15 @@ function AppWithRedux() {
   }, [dispatch])
 
   const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
-
+  const error = useSelector<AppRootStateType, string | null>(state => state.app.error)
   return (
     <ChakraProvider>
       <div className="App">
         <HeaderWithAction addTodolist={addTodolist}/>
-        {status === 'loading' && <Progress size='xs' isIndeterminate colorScheme={'teal'} mb='30'/>
+        {error !== null && <ErrorAlert error={error}/>}
+        {
+          status === 'loading' &&
+            <Progress size='xs' isIndeterminate colorScheme={'teal'} mb='30'/>
         }
 
         <Box alignItems={'top'} display={"flex"} flexWrap={'wrap'} justifyContent={'center'} minHeight={800}>
