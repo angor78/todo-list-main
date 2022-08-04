@@ -1,16 +1,18 @@
 import {FilterValuesType} from "../AppWithRedux";
 import {TodolistsAPI, TodolistsType} from "../api/todolists-api";
 import {AppThunk, DispatchType} from "../state/store";
-import {setAppStatusAC, SetAppStatusACType} from "./app-reducer";
+import {errorAppAC, ErrorAppACType, RequestStatusType, setAppStatusAC, SetAppStatusACType} from "./app-reducer";
 
 const CHANGE_TODOLIST_FILTER = 'CHANGE-TODOLIST-FILTER'
 const CHANGE_TODOLIST_TITLE = 'CHANGE-TODOLIST-TITLE'
 export const ADD_TODOLIST = 'ADD-TODOLIST'
 export const REMOVE_TODOLIST = 'REMOVE-TODOLIST'
 export const SET_TODOLISTS = 'SET-TODOLISTS'
+export const CHANGE_TODOLIST_ENTITY_STATUS = 'CHANGE-TODOLIST-ENTITY-STATUS'
 
 export type TodolistDomainType = TodolistsType & {
   filter: FilterValuesType
+  entityStatus: RequestStatusType
 }
 
 let initialState: Array<TodolistDomainType> = []
@@ -27,12 +29,13 @@ export const todolistReducer = (state: Array<TodolistDomainType> = initialState,
           addedDate: action.todolist.addedDate,
           order: action.todolist.order,
           title: action.todolist.title,
-          filter: 'all'
+          filter: 'all',
+          entityStatus: 'idle'
         }, ...state]
 
     case SET_TODOLISTS:
       return action.todolists.map(el => {
-        return {...el, filter: 'all'}
+        return {...el, filter: 'all', entityStatus: 'idle'}
       })
 
     case REMOVE_TODOLIST:
@@ -40,6 +43,8 @@ export const todolistReducer = (state: Array<TodolistDomainType> = initialState,
 
     case CHANGE_TODOLIST_TITLE:
       return state.map(el => el.id === action.todolistId ? {...el, title: action.newTitle} : el)
+    case CHANGE_TODOLIST_ENTITY_STATUS:
+      return state.map(el => el.id === action.todolistId ? {...el, entityStatus: action.status} : el)
 
     default:
       return state
@@ -51,7 +56,9 @@ export type TodolistActionType =
   RemoveTodolistACType |
   ChangeTodolistTitleACType |
   SetTodolistsACType |
-  SetAppStatusACType
+  SetAppStatusACType |
+  ErrorAppACType |
+  ChangeTodolistEntityStatusACType
 
 
 //Action
@@ -80,6 +87,10 @@ export const setTodolistsAC = (todolists: Array<TodolistsType>) => {
   return {type: SET_TODOLISTS, todolists: todolists} as const
 }
 
+export type ChangeTodolistEntityStatusACType = ReturnType<typeof changeTodolistEntityStatusAC>
+export const changeTodolistEntityStatusAC = (todolistId: string, status: RequestStatusType) => {
+  return {type: CHANGE_TODOLIST_ENTITY_STATUS, todolistId, status} as const
+}
 
 //Thunk
 export function fetchTodolists(): AppThunk {
@@ -93,13 +104,14 @@ export function fetchTodolists(): AppThunk {
 
 export function createTodolist(title: string) {
   return async function (dispatch: DispatchType) {
+    dispatch(errorAppAC(null))
     dispatch(setAppStatusAC('loading'))
     let res = await TodolistsAPI.createTodolist(title)
     if (res.data.resultCode === 0) {
       dispatch(addTodolistAC(res.data.data.item))
       dispatch(setAppStatusAC('succeeded'))
-    }else{
-      console.warn(res.data.messages)
+    } else {
+      dispatch(errorAppAC(res.data.messages[0]))
     }
   }
 }
@@ -107,11 +119,12 @@ export function createTodolist(title: string) {
 export function deleteTodolist(todolistId: string): AppThunk {
   return async function (dispatch: DispatchType) {
     dispatch(setAppStatusAC('loading'))
+    dispatch(changeTodolistEntityStatusAC(todolistId,'loading'))
     let res = await TodolistsAPI.deleteTodolist(todolistId)
     if (res.data.resultCode === 0) {
       dispatch(removeTodolistAC(todolistId))
       dispatch(setAppStatusAC('succeeded'))
-    }else{
+    } else {
       console.warn(res.data.messages)
     }
   }
@@ -121,10 +134,10 @@ export function updateTodolist(todolistId: string, title: string): AppThunk {
   return async function (dispatch: DispatchType) {
     dispatch(setAppStatusAC('loading'))
     let res = await TodolistsAPI.updateTodolist(todolistId, title)
-    if(res.data.resultCode===0){
-      dispatch(changeTodolistTitleAC(todolistId,title))
+    if (res.data.resultCode === 0) {
+      dispatch(changeTodolistTitleAC(todolistId, title))
       dispatch(setAppStatusAC('succeeded'))
-    }else{
+    } else {
       console.warn(res.data.messages)
     }
   }

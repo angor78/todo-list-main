@@ -56,6 +56,7 @@ function AppWithRedux() {
                 title={tl.title}
                 tasks={tasks[tl.id]}
                 filter={tl.filter}
+                entityStatus={tl.entityStatus}
               />
             </Box>
           })

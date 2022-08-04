@@ -5,7 +5,7 @@ import {Box, Button, Heading} from "@chakra-ui/react";
 import {DeleteIcon, EditIcon} from "@chakra-ui/icons";
 import {
   changeTodolistFilterAC, deleteTodolist,
-   updateTodolist
+  updateTodolist
 } from "../../reducers/todolist-reducer";
 import {
   createTask, fetchTasks
@@ -14,12 +14,14 @@ import {FilterValuesType} from "../../AppWithRedux";
 import {Task} from "./Task";
 import {TaskType} from "../../api/todolists-api";
 import {useAppDispatch} from "../../state/store";
+import {RequestStatusType} from "../../reducers/app-reducer";
 
 type PropsType = {
   id: string
   title: string
   tasks: Array<TaskType>
   filter: FilterValuesType
+  entityStatus: RequestStatusType
 }
 
 export const Todolist = React.memo((props: PropsType) => {
@@ -63,7 +65,13 @@ export const Todolist = React.memo((props: PropsType) => {
         <Heading size='lg' fontSize='18px'>
           <EditIcon mr='3'/>...
           <EditableSpan title={props.title} onChangeTitle={onChangeTodolistTitle}/>
-          <DeleteIcon onClick={removeTodolist} ml='3' color={"red.200"} float={'right'} mr={'3'} cursor='pointer'/>
+          <DeleteIcon onClick={removeTodolist}
+                      ml='3'
+                      color={props.entityStatus==='loading'?'gray':"red.200"}
+                      float={'right'}
+                      mr={'3'}
+                      cursor='pointer'
+                      focusable={props.entityStatus==='loading'}/>
         </Heading>
       </Box>
 
