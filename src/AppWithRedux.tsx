@@ -38,8 +38,9 @@ function AppWithRedux() {
         <HeaderWithAction addTodolist={addTodolist}/>
         {error !== null && <ErrorAlert error={error}/>}
         {
-          status === 'loading' &&
-            <Progress size='xs' isIndeterminate colorScheme={'teal'} mb='30'/>
+          status === 'loading'
+            ? <Progress size='xs' isIndeterminate colorScheme={'teal'} mb='30'/>
+            : <Progress size='xs'  colorScheme={'teal'} mb='30'/>
         }
 
         <Box alignItems={'top'} display={"flex"} flexWrap={'wrap'} justifyContent={'center'} minHeight={800}>
