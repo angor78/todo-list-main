@@ -14,9 +14,7 @@ import {
   Stack, useColorModeValue, useDisclosure
 } from "@chakra-ui/react";
 import {AddItemComponent} from "../AddItemComponent/AddItemComponent";
-import {RequestStatusType} from "../../reducers/app-reducer";
-import {useSelector} from "react-redux";
-import {AppRootStateType} from "../../state/store";
+
 
 const Links = ['Dashboard', 'Projects', 'Team'];
 
