@@ -49,7 +49,7 @@ export const Todolist = React.memo((props: PropsType) => {
 
   useEffect(() => {
     dispatch(fetchTasks(props.id))
-  }, [dispatch])
+  }, [dispatch, props.id])
 
   return <div>
     <Box minW='200'>
@@ -67,11 +67,11 @@ export const Todolist = React.memo((props: PropsType) => {
           <EditableSpan title={props.title} onChangeTitle={onChangeTodolistTitle}/>
           <DeleteIcon onClick={removeTodolist}
                       ml='3'
-                      color={props.entityStatus==='loading'?'gray':"red.200"}
+                      color={props.entityStatus !== 'loading' ? "red.200" : 'gray.300'}
                       float={'right'}
                       mr={'3'}
                       cursor='pointer'
-                      focusable={props.entityStatus==='loading'}/>
+                      focusable={props.entityStatus === 'succeeded'}/>
         </Heading>
       </Box>
 
@@ -81,6 +81,7 @@ export const Todolist = React.memo((props: PropsType) => {
                      taskId={t.id}
                      status={t.status}
                      title={t.title}
+                     entityStatus={props.entityStatus}
         />
       })
       }

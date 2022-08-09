@@ -18,6 +18,7 @@ const UsingReduxComponent = () => {
     taskId={task.id}
     status={task.status}
     title={task.title}
+    entityStatus={'succesed'}
   />
 }
 

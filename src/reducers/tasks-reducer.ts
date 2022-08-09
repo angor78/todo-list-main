@@ -2,13 +2,15 @@ import {
   ADD_TODOLIST,
   AddTodolistACType,
   REMOVE_TODOLIST,
-  RemoveTodolistACType,
+  RemoveTodolistACType, resultCode,
   SET_TODOLISTS,
   SetTodolistsACType
 } from "./todolist-reducer";
 import {AllTasksType} from "../AppWithRedux";
 import {TaskType, TodolistsAPI} from "../api/todolists-api";
 import {AppRootStateType, AppThunk, DispatchType} from "../state/store";
+import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
+import {errorAppAC, setAppStatusAC} from "./app-reducer";
 
 
 const ADD_TASK = "ADD-TASK"
@@ -108,42 +110,79 @@ export const setTaskAC = (todolistId: string, tasks: Array<TaskType>) => {
 
 export function fetchTasks(todolistId: string): AppThunk {
   return async function (dispatch: DispatchType) {
-    const response = await TodolistsAPI.getTasks(todolistId)
-    dispatch(setTaskAC(todolistId, response.data.items))
+    try {
+      const response = await TodolistsAPI.getTasks(todolistId)
+      if (!response.data.error) {
+        dispatch(setTaskAC(todolistId, response.data.items))
+      } else {
+        handleServerNetworkError({message: response.data.error}, dispatch)
+      }
+    } catch (error: any) {
+      handleServerNetworkError(error, dispatch)
+    }
+
   }
 }
 
 export function removeTask(todolistId: string, taskId: string): AppThunk {
   return async function (dispatch: DispatchType) {
+    dispatch(setAppStatusAC('loading'))
     let res = await TodolistsAPI.deleteTask(todolistId, taskId)
-    if (res.data.resultCode === 0) {
-      dispatch(removeTaskAC(todolistId, taskId))
+    try {
+      if (res.data.resultCode === resultCode.SUCCESS) {
+        dispatch(errorAppAC(null))
+        dispatch(removeTaskAC(todolistId, taskId))
+        dispatch(setAppStatusAC('succeeded'))
+      } else {
+        handleServerAppError(res.data, dispatch)
+      }
+    } catch (error: any) {
+      handleServerNetworkError(error, dispatch)
     }
   }
 }
 
 export function createTask(todolistId: string, title: string): AppThunk {
   return async function (dispatch: DispatchType) {
-    //fix any?
-    let res: any = await TodolistsAPI.createTask(todolistId, title)
-    let item: TaskType = res.data.data.item
-    if (res.data.resultCode === 0) {
-      dispatch(addTaskAC(item))
+    dispatch(setAppStatusAC('loading'))
+    try {
+      //fix any?
+      let res: any = await TodolistsAPI.createTask(todolistId, title)
+      let item: TaskType = res.data.data.item
+      if (res.data.resultCode === resultCode.SUCCESS) {
+        dispatch(errorAppAC(null))
+        dispatch(addTaskAC(item))
+        dispatch(setAppStatusAC('succeeded'))
+      } else {
+        handleServerAppError(res.data, dispatch)
+      }
+    } catch (error: any) {
+      handleServerNetworkError(error, dispatch)
     }
   }
 }
 
 export function updateTask(todolistId: string, taskId: string, title: string): AppThunk {
   return async function (dispatch: DispatchType) {
-    let res = await TodolistsAPI.updateTask(todolistId, taskId, title)
-    if (res.data.resultCode === 0) {
-      dispatch(changeTaskTitleAC(todolistId, taskId, title))
+    dispatch(setAppStatusAC('loading'))
+    try {
+      let res = await TodolistsAPI.updateTask(todolistId, taskId, title)
+      if (res.data.resultCode === resultCode.SUCCESS) {
+        dispatch(errorAppAC(null))
+        dispatch(changeTaskTitleAC(todolistId, taskId, title))
+        dispatch(setAppStatusAC('succeeded'))
+      } else {
+        handleServerAppError(res.data, dispatch)
+      }
+    } catch (error: any) {
+      handleServerNetworkError(error, dispatch)
     }
   }
 }
 
 export function changeStatusTask(todolistId: string, taskId: string, status: number): AppThunk {
   return async function (dispatch: DispatchType, getState: () => AppRootStateType) {
+    dispatch(setAppStatusAC('loading'))
     const allTasksFromState = getState().tasks
     const tasksForCurrentTodolist = allTasksFromState[todolistId]
     const task = tasksForCurrentTodolist.find(t => {
@@ -158,9 +197,17 @@ export function changeStatusTask(todolistId: string, taskId: string, status: num
         deadline: task.deadline,
         status: status
       }
-      let res = await TodolistsAPI.changeStatus(todolistId, taskId, model)
-      if (res.data.resultCode === 0) {
-        dispatch(changeTaskStatusAC(todolistId, taskId, model.status))
+      try {
+        let res = await TodolistsAPI.changeStatus(todolistId, taskId, model)
+        if (res.data.resultCode === resultCode.SUCCESS) {
+          dispatch(errorAppAC(null))
+          dispatch(changeTaskStatusAC(todolistId, taskId, model.status))
+          dispatch(setAppStatusAC('succeeded'))
+        } else {
+          handleServerAppError(res.data, dispatch)
+        }
+      } catch (error: any) {
+        handleServerNetworkError(error, dispatch)
       }
     }
   }
