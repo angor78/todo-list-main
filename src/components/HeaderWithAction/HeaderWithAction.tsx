@@ -39,7 +39,7 @@ type HeaderWithActionType = {
 }
 export default function HeaderWithAction(props: HeaderWithActionType) {
   const {isOpen, onOpen, onClose} = useDisclosure();
-  let status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
+  // let status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
   return (
     <>
       <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
