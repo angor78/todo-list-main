@@ -1,5 +1,5 @@
 import {FilterValuesType} from "../AppWithRedux";
-import {TodolistsAPI, TodolistsType} from "../api/todolists-api";
+import {authMeAPI, TodolistsAPI, TodolistsType} from "../api/todolists-api";
 import {AppThunk, DispatchType} from "../state/store";
 import {errorAppAC, ErrorAppACType, RequestStatusType, setAppStatusAC, SetAppStatusACType} from "./app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
@@ -103,6 +103,7 @@ export enum resultCode {
 //Thunk
 export function fetchTodolists(): AppThunk {
   return async function (dispatch: DispatchType) {
+    authMeAPI.authMe()
     dispatch(setAppStatusAC('loading'))
     try {
       let res = await TodolistsAPI.getTodolist()

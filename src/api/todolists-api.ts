@@ -50,7 +50,11 @@ export type ModelType = {
   deadline: string | null
   status: number
 }
-
+export const authMeAPI = {
+  authMe() {
+    return instance.get(`auth/me`)
+  }
+}
 export const TodolistsAPI = {
   //Todolists
   getTodolist() {
@@ -83,5 +87,4 @@ export const TodolistsAPI = {
   changeStatus(todolistId: string, taskId: string, model: ModelType) {
     return instance.put<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`, model)
   },
-
 }
