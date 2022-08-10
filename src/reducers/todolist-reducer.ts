@@ -103,11 +103,12 @@ export enum resultCode {
 //Thunk
 export function fetchTodolists(): AppThunk {
   return async function (dispatch: DispatchType) {
-    let auth = await authMeAPI.authMe()
-    console.log(auth)
+
+
     dispatch(setAppStatusAC('loading'))
 
     try {
+      await authMeAPI.authMe()
       let res = await TodolistsAPI.getTodolist()
       if (res.data) {
         dispatch(errorAppAC(null))
