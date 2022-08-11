@@ -4,7 +4,6 @@ import {AppThunk, DispatchType} from "../state/store";
 import {errorAppAC, ErrorAppACType, RequestStatusType, setAppStatusAC, SetAppStatusACType} from "./app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 import {AxiosError} from "axios";
-import {authMe} from "./auth-reducer";
 
 const CHANGE_TODOLIST_FILTER = 'CHANGE-TODOLIST-FILTER'
 const CHANGE_TODOLIST_TITLE = 'CHANGE-TODOLIST-TITLE'
@@ -105,9 +104,8 @@ export enum resultCode {
 export function fetchTodolists(): AppThunk {
   return async function (dispatch: DispatchType) {
 
-
     dispatch(setAppStatusAC('loading'))
-    dispatch(authMe())
+    // dispatch(authMe())
     try {
       let res = await TodolistsAPI.getTodolist()
       if (res.data) {

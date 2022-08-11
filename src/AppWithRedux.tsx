@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect} from 'react';
 import './App.css';
-import {ChakraProvider, Container, Progress} from "@chakra-ui/react"
+import {ChakraProvider, Container} from "@chakra-ui/react"
 import HeaderWithAction from "./components/HeaderWithAction/HeaderWithAction";
 import {createTodolist} from "./reducers/todolist-reducer";
 import {TaskType} from "./api/todolists-api";
@@ -8,8 +8,7 @@ import {Login} from "./components/Login/Login";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {TodolistsList} from "./components/TodolistsList";
 import {authMe} from "./reducers/auth-reducer";
-import {AppRootStateType, useAppDispatch} from "./state/store";
-import {useSelector} from "react-redux";
+import {useAppDispatch} from "./state/store";
 
 
 export type FilterValuesType = "all" | "active" | "completed";
@@ -26,16 +25,16 @@ function AppWithRedux() {
     let action = createTodolist(newTitle)
     dispatch(action)
   }, [dispatch])
-  const isInitialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)
+  // const isInitialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)
   useEffect(() => {
     dispatch(authMe())
   }, [dispatch])
 
-  if (!isInitialized) {
-    return (
-      <Progress size='xs' isIndeterminate colorScheme={'teal'} mb='30'/>
-    )
-  }
+  // if (!isInitialized) {
+  //   return (
+  //     <Progress size='xs' isIndeterminate colorScheme={'teal'} mb='30'/>
+  //   )
+  // }
 
 
   return (
