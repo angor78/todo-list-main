@@ -1,12 +1,12 @@
 import React, {useCallback, useEffect} from 'react';
 import './App.css';
-import {ChakraProvider} from "@chakra-ui/react"
+import {ChakraProvider, Container} from "@chakra-ui/react"
 import HeaderWithAction from "./components/HeaderWithAction/HeaderWithAction";
 import {createTodolist, fetchTodolists} from "./reducers/todolist-reducer";
 import {useDispatch} from "react-redux";
 import {TaskType} from "./api/todolists-api";
 import {Login} from "./components/Login/Login";
-import {Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import {TodolistsList} from "./components/TodolistsList";
 
 export type FilterValuesType = "all" | "active" | "completed";
@@ -36,7 +36,8 @@ function AppWithRedux() {
 
 
         <Routes>
-          <Route path='*' element={<h1>404: PAGE NOT FOUND</h1>}/>
+          <Route path='/404' element={<Container color={'red'}><h1>404: PAGE NOT FOUND</h1></Container>}/>
+          <Route path='*' element={<Navigate to={'/404'}/>}/>
           <Route path='/' element={<TodolistsList/>}/>
           <Route path='/login' element={<Login/>}/>
         </Routes>
