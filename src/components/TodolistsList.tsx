@@ -21,7 +21,7 @@ export const TodolistsList = () => {
     }
     dispatch(fetchTodolists())
 
-  }, [dispatch])
+  }, [isAuth,dispatch])
   if (!isAuth) {
     return <Navigate to={'/login'}/>
   }
