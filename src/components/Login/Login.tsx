@@ -8,7 +8,7 @@ export const Login = () => {
       <FormControl w={'500px'} h={'250px'}  borderRadius='lg' p={'3'}  bgColor={'rgba(49, 151, 149,0.2)'}>
         <FormLabel>Email address</FormLabel>
         <Input type='email'/>
-        <FormLabel>Passsord</FormLabel>
+        <FormLabel>Password</FormLabel>
         <Input type='password'/>
         <Button
           alignItems={'center'}
