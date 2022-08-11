@@ -8,7 +8,6 @@ export type addItemComponentPropsType = {
   addItem: (newTitle: string) => void
 }
 export const AddItemComponent = React.memo((props: addItemComponentPropsType) => {
-  console.log('AddItemComponent called')
   let [title, setTitle] = useState("")
   let [error, setError] = useState<string | null>(null)
 

@@ -50,9 +50,27 @@ export type ModelType = {
   deadline: string | null
   status: number
 }
-export const authMeAPI = {
-  authMe() {
+export type LoginParamsType = {
+  email: string
+  password: string
+  rememberMe: boolean
+  captcha: boolean
+}
+export type ResponseLoginType = {
+  data: { userId: number }
+  messages: []
+  fieldsErrors: []
+  resultCode: number
+}
+export const authAPI = {
+  me() {
     return instance.get(`auth/me`)
+  },
+  login(values: LoginParamsType) {
+    return instance.post<ResponseLoginType>(`auth/login`, values)
+  },
+  logout() {
+    return instance.delete(`/auth/login`)
   }
 }
 export const TodolistsAPI = {

@@ -2,7 +2,7 @@ import React, {ReactNode} from 'react';
 
 import {HamburgerIcon, CloseIcon, CheckCircleIcon, ExternalLinkIcon} from '@chakra-ui/icons';
 import {
-  Avatar,
+  Badge,
   Box,
   Button, Flex, Heading,
   HStack,
@@ -15,9 +15,10 @@ import {
 } from "@chakra-ui/react";
 import {AddItemComponent} from "../AddItemComponent/AddItemComponent";
 import {ErrorAlert} from "../ErrorAlert";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../state/store";
 import {RequestStatusType} from "../../reducers/app-reducer";
+import {logout} from "../../reducers/auth-reducer";
 
 
 const Links = ['Dashboard', 'Projects', 'Team'];
@@ -40,10 +41,16 @@ type HeaderWithActionType = {
   addTodolist: (newTitle: string) => void
 }
 export default function HeaderWithAction(props: HeaderWithActionType) {
+  let dispatch = useDispatch<any>()
   const {isOpen, onOpen, onClose} = useDisclosure();
   const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
   const error = useSelector<AppRootStateType, string | null>(state => state.app.error)
-  // let status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
+  const login = useSelector<AppRootStateType, string>(state => state.auth.login)
+  const isAuth = useSelector<AppRootStateType, boolean>(state => state.auth.isAuth)
+
+  const onLogout = () => {
+    dispatch(logout())
+  }
   return (
     <>
       <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4} maxH={'70'}>
@@ -69,6 +76,7 @@ export default function HeaderWithAction(props: HeaderWithActionType) {
               ))}
             </HStack>
           </HStack>
+
           <Flex alignItems={'center'}>
             <AddItemComponent addItem={props.addTodolist}/>
             <Menu>
@@ -78,12 +86,6 @@ export default function HeaderWithAction(props: HeaderWithActionType) {
                 variant={'link'}
                 cursor={'pointer'}
                 minW={0}>
-                <Avatar
-                  size={'sm'}
-                  src={
-                    'https://avatars.githubusercontent.com/u/15981680?s=400&u=c777ec047d344fe8a7f933de75e3e3db39f78841&v=4'
-                  }
-                />
               </MenuButton>
               <MenuList>
                 <MenuItem>
@@ -96,9 +98,18 @@ export default function HeaderWithAction(props: HeaderWithActionType) {
                 <MenuItem>Link 3</MenuItem>
               </MenuList>
             </Menu>
+            {isAuth ?
+              <Box>
+                <Badge colorScheme={'blue'} p={'2'}>{login}</Badge>
+                <Button size={'sm'} colorScheme={'red'} onClick={onLogout}>Logout</Button>
+              </Box> :
+              <Box>
+                <Badge colorScheme={'blue'} p={'2'}>no user</Badge>
+                <Button size={'sm'} colorScheme={'red'} onClick={onLogout}>Login</Button>
+              </Box>}
+
           </Flex>
         </Flex>
-
         {isOpen ? (
           <Box pb={4} display={{md: 'none'}}>
             <Stack as={'nav'} spacing={4}>

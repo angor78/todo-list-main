@@ -1,9 +1,10 @@
 import {FilterValuesType} from "../AppWithRedux";
-import {authMeAPI, TodolistsAPI, TodolistsType} from "../api/todolists-api";
+import {TodolistsAPI, TodolistsType} from "../api/todolists-api";
 import {AppThunk, DispatchType} from "../state/store";
 import {errorAppAC, ErrorAppACType, RequestStatusType, setAppStatusAC, SetAppStatusACType} from "./app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 import {AxiosError} from "axios";
+import {authMe} from "./auth-reducer";
 
 const CHANGE_TODOLIST_FILTER = 'CHANGE-TODOLIST-FILTER'
 const CHANGE_TODOLIST_TITLE = 'CHANGE-TODOLIST-TITLE'
@@ -106,9 +107,8 @@ export function fetchTodolists(): AppThunk {
 
 
     dispatch(setAppStatusAC('loading'))
-
+    dispatch(authMe())
     try {
-      await authMeAPI.authMe()
       let res = await TodolistsAPI.getTodolist()
       if (res.data) {
         dispatch(errorAppAC(null))

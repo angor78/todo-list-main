@@ -13,7 +13,6 @@ export function ErrorAlert(props: ErrorAlertType) {
 
 
   return (
-
     <Alert status='error' justifyContent={'center'}>
       <AlertIcon/>
       <AlertTitle>Error!</AlertTitle>
