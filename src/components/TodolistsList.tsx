@@ -12,7 +12,6 @@ export const TodolistsList = () => {
   let dispatch = useAppDispatch()
 
   const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
-
   const tasks = useSelector<AppRootStateType, AllTasksType>(state => state.tasks)
   const isAuth = useSelector<AppRootStateType, boolean>(state => state.auth.isAuth)
   useEffect(() => {
@@ -21,7 +20,7 @@ export const TodolistsList = () => {
     }
     dispatch(fetchTodolists())
 
-  }, [isAuth,dispatch])
+  }, [isAuth, dispatch])
   if (!isAuth) {
     return <Navigate to={'/login'}/>
   }

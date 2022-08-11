@@ -70,7 +70,7 @@ export const login = (email: string, password: string, rememberMe: boolean, capt
           dispatch(setAppStatusAC('succeeded'))
           // window.location.replace(`/`)
         } else {
-          handleServerNetworkError({message: data.statusText}, dispatch)
+          handleServerNetworkError({message: data.data.messages[0]}, dispatch)
         }
       })
       .catch(e => handleServerNetworkError(e, dispatch))

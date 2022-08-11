@@ -58,8 +58,8 @@ export type LoginParamsType = {
 }
 export type ResponseLoginType = {
   data: { userId: number }
-  messages: []
-  fieldsErrors: []
+  messages: Array<string>
+  fieldsErrors: Array<string>
   resultCode: number
 }
 export const authAPI = {
