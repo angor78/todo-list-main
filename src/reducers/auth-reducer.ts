@@ -65,7 +65,7 @@ export const login = (email: string, password: string, rememberMe: boolean, capt
     authAPI.login(values)
       .then(data => {
         if (data.data.resultCode === 0) {
-          dispatch(authMe())
+          // dispatch(authMe())
           dispatch(errorAppAC(null))
           dispatch(setAppStatusAC('succeeded'))
           // window.location.replace(`/`)
