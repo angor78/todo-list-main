@@ -10,10 +10,14 @@ import {
   MenuButton,
   MenuDivider,
   MenuItem,
-  MenuList,
+  MenuList, Progress,
   Stack, useColorModeValue, useDisclosure
 } from "@chakra-ui/react";
 import {AddItemComponent} from "../AddItemComponent/AddItemComponent";
+import {ErrorAlert} from "../ErrorAlert";
+import {useSelector} from "react-redux";
+import {AppRootStateType} from "../../state/store";
+import {RequestStatusType} from "../../reducers/app-reducer";
 
 
 const Links = ['Dashboard', 'Projects', 'Team'];
@@ -37,10 +41,12 @@ type HeaderWithActionType = {
 }
 export default function HeaderWithAction(props: HeaderWithActionType) {
   const {isOpen, onOpen, onClose} = useDisclosure();
+  const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
+  const error = useSelector<AppRootStateType, string | null>(state => state.app.error)
   // let status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
   return (
     <>
-      <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
+      <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4} maxH={'70'}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <IconButton
             size={'md'}
@@ -102,6 +108,12 @@ export default function HeaderWithAction(props: HeaderWithActionType) {
             </Stack>
           </Box>
         ) : null}
+        {error !== null && <ErrorAlert error={error}/>}
+        {
+          status === 'loading'
+            ? <Progress size='xs' isIndeterminate colorScheme={'teal'} mb='30'/>
+            : <Progress size='xs' colorScheme={'teal'} mb='30'/>
+        }
       </Box>
     </>
   );
