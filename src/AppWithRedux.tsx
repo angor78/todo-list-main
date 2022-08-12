@@ -28,14 +28,15 @@ function AppWithRedux() {
   }, [dispatch])
 
   useEffect(() => {
+    debugger
     dispatch(authMe())
   }, [dispatch])
 
   const isInitialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)
-
   if (!isInitialized) {
-    return (
-      <Progress size='xs' isIndeterminate colorScheme={'teal'} mb='30'/>
+    debugger
+    return (<h1>2222222222222222...........</h1>
+      // <Progress size='xs' isIndeterminate colorScheme={'teal'} mb='30'/>
     )
   }
 

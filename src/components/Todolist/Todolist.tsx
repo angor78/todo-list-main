@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback} from 'react';
 import {AddItemComponent} from "../AddItemComponent/AddItemComponent";
 import {EditableSpan} from "../EditableSpan/EditableSpan";
 import {Box, Button, Heading} from "@chakra-ui/react";
@@ -8,7 +8,7 @@ import {
   updateTodolist
 } from "../../reducers/todolist-reducer";
 import {
-  createTask, fetchTasks
+  createTask
 } from "../../reducers/tasks-reducer";
 import {FilterValuesType} from "../../AppWithRedux";
 import {Task} from "./Task";
@@ -48,9 +48,9 @@ export const Todolist = React.memo((props: PropsType) => {
     dispatch(updateTodolist(props.id, newTitle))
   }, [dispatch, props.id])
 
-  useEffect(() => {
-    dispatch(fetchTasks(props.id))
-  }, [dispatch, props.id])
+  // useEffect(() => {
+  //   dispatch(fetchTasks(props.id))
+  // }, [dispatch, props.id])
 
   return <div>
     <Box minW='200'>

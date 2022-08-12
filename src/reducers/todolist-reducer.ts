@@ -4,6 +4,7 @@ import {AppThunk, DispatchType} from "../state/store";
 import {errorAppAC, ErrorAppACType, RequestStatusType, setAppStatusAC, SetAppStatusACType} from "./app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 import {AxiosError} from "axios";
+import {fetchTasks} from "./tasks-reducer";
 
 const CHANGE_TODOLIST_FILTER = 'CHANGE-TODOLIST-FILTER'
 const CHANGE_TODOLIST_TITLE = 'CHANGE-TODOLIST-TITLE'
@@ -11,6 +12,7 @@ export const ADD_TODOLIST = 'ADD-TODOLIST'
 export const REMOVE_TODOLIST = 'REMOVE-TODOLIST'
 export const SET_TODOLISTS = 'SET-TODOLISTS'
 export const CHANGE_TODOLIST_ENTITY_STATUS = 'CHANGE-TODOLIST-ENTITY-STATUS'
+export const CLEAR_DATA = 'CLEAR-DATA'
 
 export type TodolistDomainType = TodolistsType & {
   filter: FilterValuesType
@@ -42,6 +44,8 @@ export const todolistReducer = (state: Array<TodolistDomainType> = initialState,
 
     case REMOVE_TODOLIST:
       return state.filter(el => el.id !== action.todolistId)
+    case CLEAR_DATA:
+      return []
 
     case CHANGE_TODOLIST_TITLE:
       return state.map(el => el.id === action.todolistId ? {...el, title: action.newTitle} : el)
@@ -60,7 +64,8 @@ export type TodolistActionType =
   SetTodolistsACType |
   SetAppStatusACType |
   ErrorAppACType |
-  ChangeTodolistEntityStatusACType
+  ChangeTodolistEntityStatusACType|
+  ClearDataACType
 
 
 //Action
@@ -94,6 +99,11 @@ export const changeTodolistEntityStatusAC = (todolistId: string, status: Request
   return {type: CHANGE_TODOLIST_ENTITY_STATUS, todolistId, status} as const
 }
 
+export type ClearDataACType = ReturnType<typeof clearDataAC>
+export const clearDataAC = () => {
+  return {type: CLEAR_DATA}as const
+}
+
 export enum resultCode {
   SUCCESS,
   // BADCODE = 1,
@@ -112,6 +122,9 @@ export function fetchTodolists(): AppThunk {
         dispatch(errorAppAC(null))
         dispatch(setTodolistsAC(res.data))
         dispatch(setAppStatusAC('succeeded'))
+        res.data.forEach((tl)=>{
+          dispatch(fetchTasks(tl.id))
+        })
       } else {
         handleServerNetworkError({message: res.statusText}, dispatch)
       }

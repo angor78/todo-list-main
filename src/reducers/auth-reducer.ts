@@ -2,6 +2,7 @@ import {authAPI} from "../api/todolists-api";
 import {Dispatch} from "redux";
 import {errorAppAC, setAppStatusAC, setIsInitializedAC} from "./app-reducer";
 import {handleServerNetworkError} from "../utils/error-utils";
+import {clearDataAC} from "./todolist-reducer";
 
 const SET_USERS_DATA = 'SET_USERS_DATA'
 
@@ -48,7 +49,8 @@ export const setAuthUserData = (id: number, email: string, login: string, isAuth
 //Thunk
 export const authMe = () =>
   (dispatch: Dispatch) => {
-    return authAPI.me().then(res => {
+    return authAPI.me()
+      .then(res => {
       if (res.data.resultCode === 0) {
         dispatch(errorAppAC(null))
         dispatch(setIsInitializedAC(true))
@@ -56,10 +58,11 @@ export const authMe = () =>
         dispatch(setAuthUserData(data.id, data.email, data.login, true))
       }
     })
+      .finally(()=>dispatch(setIsInitializedAC(true)))
   }
 
 export const login = (email: string, password: string, rememberMe: boolean, captcha: boolean) =>
-  (dispatch:any) => {
+  (dispatch: any) => {
     dispatch(setAppStatusAC('loading'))
     let values = {email, password, rememberMe, captcha}
     authAPI.login(values)
@@ -67,7 +70,7 @@ export const login = (email: string, password: string, rememberMe: boolean, capt
         if (data.data.resultCode === 0) {
           dispatch(authMe())
           dispatch(errorAppAC(null))
-          dispatch(setAppStatusAC('succeeded'))
+
           // window.location.replace(`/`)
         } else {
           handleServerNetworkError({message: data.data.messages[0]}, dispatch)
@@ -81,6 +84,7 @@ export const logout = () =>
     authAPI.logout()
       .then(data => {
         if (data.data.resultCode === 0) {
+          dispatch(clearDataAC())
           dispatch(setAuthUserData(0, '', '', false))
           dispatch(setAppStatusAC('succeeded'))
         }

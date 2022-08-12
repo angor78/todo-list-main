@@ -10,17 +10,17 @@ import {Navigate} from "react-router-dom";
 
 export const TodolistsList = () => {
   let dispatch = useAppDispatch()
-
+  debugger
   const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
   const tasks = useSelector<AppRootStateType, AllTasksType>(state => state.tasks)
+  // const isInitialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)
   const isAuth = useSelector<AppRootStateType, boolean>(state => state.auth.isAuth)
   useEffect(() => {
-    if (!isAuth) {
-      return;
+    if (isAuth) {
+      dispatch(fetchTodolists())
     }
-    dispatch(fetchTodolists())
-
   }, [isAuth, dispatch])
+
   if (!isAuth) {
     return <Navigate to={'/login'}/>
   }

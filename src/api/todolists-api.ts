@@ -70,7 +70,7 @@ export const authAPI = {
     return instance.post<ResponseLoginType>(`auth/login`, values)
   },
   logout() {
-    return instance.delete(`/auth/login`)
+    return instance.delete<ResponseLoginType>(`/auth/login`)
   }
 }
 export const TodolistsAPI = {
