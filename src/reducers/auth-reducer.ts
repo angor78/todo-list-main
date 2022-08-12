@@ -53,9 +53,9 @@ export const authMe = () =>
       .then(res => {
       if (res.data.resultCode === 0) {
         dispatch(errorAppAC(null))
-        dispatch(setIsInitializedAC(true))
         let data = res.data.data
         dispatch(setAuthUserData(data.id, data.email, data.login, true))
+        dispatch(setIsInitializedAC(true))
       }
     })
       .finally(()=>dispatch(setIsInitializedAC(true)))

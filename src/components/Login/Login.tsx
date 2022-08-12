@@ -43,7 +43,6 @@ export const Login = () => {
       formik.resetForm()
     },
   })
-  debugger
   const isAuth = useSelector<AppRootStateType, boolean>(state => state.auth.isAuth)
   if (isAuth) {
     return <Navigate to={'/'}/>

@@ -48,9 +48,6 @@ export const Todolist = React.memo((props: PropsType) => {
     dispatch(updateTodolist(props.id, newTitle))
   }, [dispatch, props.id])
 
-  // useEffect(() => {
-  //   dispatch(fetchTasks(props.id))
-  // }, [dispatch, props.id])
 
   return <div>
     <Box minW='200'>
