@@ -33,8 +33,8 @@ function AppWithRedux() {
 
   const isInitialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)
   if (!isInitialized) {
-    return (<h1>2222222222222222...........</h1>
-      // <Progress size='xs' isIndeterminate colorScheme={'teal'} mb='30'/>
+    return (
+      <Progress size='xs' isIndeterminate colorScheme={'teal'} mb='30'/>
     )
   }
 
