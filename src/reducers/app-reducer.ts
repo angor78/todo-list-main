@@ -1,6 +1,7 @@
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
-const INITIALIZED = 'INITIALIZED'
 const initialState = {
   status: 'succeeded' as RequestStatusType,
   error: null,
@@ -11,32 +12,29 @@ type InitialStateType = {
   error: string | null
   isInitialized: boolean
 }
-
-export const appReducer = (state: InitialStateType = initialState, action: AppActionType): InitialStateType => {
-  switch (action.type) {
-    case 'APP/SET-STATUS':
-      return {...state, status: action.status}
-    case 'APP/SET-ERROR':
-      return {...state, status: 'failed', error: action.error}
-    case INITIALIZED:
-      return {...state, isInitialized: action.isInitialized}
-    default:
-      return state
+const slice = createSlice({
+  name: 'app',
+  initialState: initialState,
+  reducers: {
+    setAppStatusAC(state, action: PayloadAction<{ status: RequestStatusType }>) {
+      state.status = action.payload.status
+    },
+    errorAppAC(state: InitialStateType, action: PayloadAction<{ error: null | string }>) {
+      state.error = action.payload.error
+    },
+    setIsInitializedAC(state, action: PayloadAction<{ isInitialized: boolean }>) {
+      state.isInitialized = action.payload.isInitialized
+    }
   }
-}
+})
+export const appReducer = slice.reducer
 
-export type AppActionType = SetAppStatusACType | ErrorAppACType | SetIsInitializedACType
-export type SetAppStatusACType = ReturnType<typeof setAppStatusAC>
-export const setAppStatusAC = (status: RequestStatusType) => {
-  return {type: 'APP/SET-STATUS', status} as const
-}
+export const setAppStatusAC = slice.actions.setAppStatusAC
+export const errorAppAC = slice.actions.errorAppAC
+export const setIsInitializedAC = slice.actions.setIsInitializedAC
 
-export type ErrorAppACType = ReturnType<typeof errorAppAC>
-export const errorAppAC = (error: string | null) => {
-  return {type: 'APP/SET-ERROR', error} as const
-}
+export type AppActionsTypes =
+  ReturnType<typeof setAppStatusAC> |
+  ReturnType<typeof errorAppAC> |
+  ReturnType<typeof setIsInitializedAC>
 
-export type SetIsInitializedACType = ReturnType<typeof setIsInitializedAC>
-export const setIsInitializedAC = (isInitialized: boolean) => {
-  return {type: INITIALIZED, isInitialized} as const
-}

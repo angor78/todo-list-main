@@ -3,7 +3,7 @@ import {Dispatch} from "redux";
 import {errorAppAC, setAppStatusAC, setIsInitializedAC} from "./app-reducer";
 import {handleServerNetworkError} from "../utils/error-utils";
 import {clearDataAC} from "./todolist-reducer";
-import {createSlice} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 
 let initialAuth = {
@@ -16,7 +16,7 @@ const slice = createSlice({
   name: 'auth',
   initialState: initialAuth,
   reducers: {
-    setAuthUserData(state, action) {
+    setAuthUserData(state, action: PayloadAction<{ id: number, email: string, login: string, isAuth: boolean }>) {
       state.id = action.payload.id
       state.email = action.payload.email
       state.login = action.payload.login
@@ -33,25 +33,25 @@ export const authMe = () =>
     return authAPI.me()
       .then(res => {
         if (res.data.resultCode === 0) {
-          dispatch(errorAppAC(null))
+          dispatch(errorAppAC({error: null}))
           let data = res.data.data
           let payload = {id: data.id, email: data.email, login: data.login, isAuth: true}
           dispatch(setAuthUserData(payload))
-          dispatch(setIsInitializedAC(true))
+          dispatch(setIsInitializedAC({isInitialized: true}))
         }
       })
-      .finally(() => dispatch(setIsInitializedAC(true)))
+      .finally(() => dispatch(setIsInitializedAC({isInitialized: true})))
   }
 
 export const login = (email: string, password: string, rememberMe: boolean, captcha: boolean) =>
   (dispatch: any) => {
-    dispatch(setAppStatusAC('loading'))
+    dispatch(setAppStatusAC({status: 'loading'}))
     let values = {email, password, rememberMe, captcha}
     authAPI.login(values)
       .then(data => {
         if (data.data.resultCode === 0) {
           dispatch(authMe())
-          dispatch(errorAppAC(null))
+          dispatch(errorAppAC({error: null}))
         } else {
           handleServerNetworkError({message: data.data.messages[0]}, dispatch)
         }
@@ -60,14 +60,14 @@ export const login = (email: string, password: string, rememberMe: boolean, capt
   }
 export const logout = () =>
   (dispatch: Dispatch) => {
-    dispatch(setAppStatusAC('loading'))
+    dispatch(setAppStatusAC({status: 'loading'}))
     authAPI.logout()
       .then(data => {
         if (data.data.resultCode === 0) {
           dispatch(clearDataAC())
           let payload = {id: 0, email: '', login: '', isAuth: false}
           dispatch(setAuthUserData(payload))
-          dispatch(setAppStatusAC('succeeded'))
+          dispatch(setAppStatusAC({status: 'succeeded'}))
         }
       })
   }

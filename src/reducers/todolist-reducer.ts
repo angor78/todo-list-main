@@ -1,7 +1,7 @@
 import {FilterValuesType} from "../AppWithRedux";
 import {TodolistsAPI, TodolistsType} from "../api/todolists-api";
 import {AppThunk, DispatchType} from "../redux-store/store";
-import {errorAppAC, ErrorAppACType, RequestStatusType, setAppStatusAC, SetAppStatusACType} from "./app-reducer";
+import {errorAppAC, RequestStatusType, setAppStatusAC} from "./app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 import {AxiosError} from "axios";
 import {fetchTasks} from "./tasks-reducer";
@@ -62,8 +62,6 @@ export type TodolistActionType =
   RemoveTodolistACType |
   ChangeTodolistTitleACType |
   SetTodolistsACType |
-  SetAppStatusACType |
-  ErrorAppACType |
   ChangeTodolistEntityStatusACType|
   ClearDataACType
 
@@ -114,14 +112,14 @@ export enum resultCode {
 export function fetchTodolists(): AppThunk {
   return async function (dispatch: DispatchType) {
 
-    dispatch(setAppStatusAC('loading'))
+    dispatch(setAppStatusAC({status:'loading'}))
     // dispatch(authMe())
     try {
       let res = await TodolistsAPI.getTodolist()
       if (res.data) {
-        dispatch(errorAppAC(null))
+        dispatch(errorAppAC({error:null}))
         dispatch(setTodolistsAC(res.data))
-        dispatch(setAppStatusAC('succeeded'))
+        dispatch(setAppStatusAC({status:'succeeded'}))
         res.data.forEach((tl)=>{
           dispatch(fetchTasks(tl.id))
         })
@@ -136,14 +134,14 @@ export function fetchTodolists(): AppThunk {
 
 export function createTodolist(title: string) {
   return async function (dispatch: DispatchType) {
-    dispatch(errorAppAC(null))
-    dispatch(setAppStatusAC('loading'))
+    dispatch(errorAppAC({error:null}))
+    dispatch(setAppStatusAC({status:'loading'}))
     try {
       let res = await TodolistsAPI.createTodolist(title)
       if (res.data.resultCode === resultCode.SUCCESS) {
-        dispatch(errorAppAC(null))
+        dispatch(errorAppAC({error:null}))
         dispatch(addTodolistAC(res.data.data.item))
-        dispatch(setAppStatusAC('succeeded'))
+        dispatch(setAppStatusAC({status:'succeeded'}))
       } else {
         handleServerAppError(res.data, dispatch)
       }
@@ -155,14 +153,14 @@ export function createTodolist(title: string) {
 
 export function deleteTodolist(todolistId: string): AppThunk {
   return async function (dispatch: DispatchType) {
-    dispatch(setAppStatusAC('loading'))
+    dispatch(setAppStatusAC({status: 'loading'}))
     dispatch(changeTodolistEntityStatusAC(todolistId, 'loading'))
     try {
       let res = await TodolistsAPI.deleteTodolist(todolistId)
       if (res.data.resultCode === resultCode.SUCCESS) {
-        dispatch(errorAppAC(null))
+        dispatch(errorAppAC({error:null}))
         dispatch(removeTodolistAC(todolistId))
-        dispatch(setAppStatusAC('succeeded'))
+        dispatch(setAppStatusAC({status:'succeeded'}))
       } else {
         handleServerAppError(res.data, dispatch)
       }
@@ -175,13 +173,13 @@ export function deleteTodolist(todolistId: string): AppThunk {
 
 export function updateTodolist(todolistId: string, title: string): AppThunk {
   return async function (dispatch: DispatchType) {
-    dispatch(setAppStatusAC('loading'))
+    dispatch(setAppStatusAC({status:'loading'}))
     try {
       let res = await TodolistsAPI.updateTodolist(todolistId, title)
       if (res.data.resultCode === resultCode.SUCCESS) {
-        dispatch(errorAppAC(null))
+        dispatch(errorAppAC({error:null}))
         dispatch(changeTodolistTitleAC(todolistId, title))
-        dispatch(setAppStatusAC('succeeded'))
+        dispatch(setAppStatusAC({status:'succeeded'}))
       } else {
         handleServerAppError(res.data, dispatch)
       }
