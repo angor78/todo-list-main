@@ -3,7 +3,7 @@ import {Box, Button, Checkbox, Container, FormControl, FormLabel, Input} from "@
 import {useFormik} from "formik";
 import {useSelector} from "react-redux";
 import {login} from "../../reducers/auth-reducer";
-import {AppRootStateType, useAppDispatch} from "../../state/store";
+import {AppRootStateType, useAppDispatch} from "../../redux-store/store";
 import {Navigate} from "react-router-dom";
 
 export const Login = () => {

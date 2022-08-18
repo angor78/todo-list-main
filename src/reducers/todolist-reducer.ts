@@ -1,6 +1,6 @@
 import {FilterValuesType} from "../AppWithRedux";
 import {TodolistsAPI, TodolistsType} from "../api/todolists-api";
-import {AppThunk, DispatchType} from "../state/store";
+import {AppThunk, DispatchType} from "../redux-store/store";
 import {errorAppAC, ErrorAppACType, RequestStatusType, setAppStatusAC, SetAppStatusACType} from "./app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 import {AxiosError} from "axios";

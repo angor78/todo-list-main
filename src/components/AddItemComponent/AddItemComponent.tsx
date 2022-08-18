@@ -2,7 +2,7 @@ import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 import {Button, Flex, Input} from "@chakra-ui/react";
 import {RequestStatusType} from "../../reducers/app-reducer";
 import {useSelector} from "react-redux";
-import {AppRootStateType} from "../../state/store";
+import {AppRootStateType} from "../../redux-store/store";
 
 export type addItemComponentPropsType = {
   addItem: (newTitle: string) => void

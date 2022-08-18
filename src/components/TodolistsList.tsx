@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {Box} from "@chakra-ui/react";
 import {Todolist} from "./Todolist/Todolist";
 import {useSelector} from "react-redux";
-import {AppRootStateType, useAppDispatch} from "../state/store";
+import {AppRootStateType, useAppDispatch} from "../redux-store/store";
 import {fetchTodolists, TodolistDomainType} from "../reducers/todolist-reducer";
 import {AllTasksType} from "../AppWithRedux";
 import {Navigate} from "react-router-dom";
@@ -12,7 +12,7 @@ export const TodolistsList = () => {
   let dispatch = useAppDispatch()
   const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
   const tasks = useSelector<AppRootStateType, AllTasksType>(state => state.tasks)
-  // const isInitialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)
+  // const isInitialized = useSelector<AppRootStateType, boolean>(redux-store => redux-store.app.isInitialized)
   const isAuth = useSelector<AppRootStateType, boolean>(state => state.auth.isAuth)
   useEffect(() => {
     if (isAuth) {

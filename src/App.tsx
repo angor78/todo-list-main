@@ -31,7 +31,7 @@
 //   let todolistId1 = v1();
 //   let todolistId2 = v1();
 //
-//   let [state, dispatch] = useReducer(reducer, {
+//   let [redux-store, dispatch] = useReducer(reducer, {
 //     todolists: [
 //       {id: todolistId1, title: "What to learn", filter: "all"},
 //       {id: todolistId2, title: "What to buy", filter: "all"},
@@ -60,8 +60,8 @@
 //       <div className="App">
 //         <HeaderWithAction addTodolist={addTodolist}/>
 //         <Box alignItems={'top'} display={"flex"} flexWrap={'wrap'} justifyContent={'center'} minHeight={800}>
-//           {state.todolists.map(tl => {
-//             let allTodolistTasks = state.tasks[tl.id];
+//           {redux-store.todolists.map(tl => {
+//             let allTodolistTasks = redux-store.tasks[tl.id];
 //             let tasksForTodolist = allTodolistTasks;
 //
 //             if (tl.filter === "active") {

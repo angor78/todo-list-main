@@ -1,37 +1,37 @@
 // import { FilterValuesType, StateType, TodolistType} from "../App";
 // import {v1} from "uuid";
 //
-// export const reducer = (state: StateType, action: ActionType): StateType => {
+// export const reducer = (redux-store: StateType, action: ActionType): StateType => {
 //   switch (action.type) {
 //     case 'REMOVE-TASK':
-//       return {...state, tasks:{...state.tasks,[action.todolistId]:state.tasks[action.todolistId].filter(t => t.id !== action.id)}}
+//       return {...redux-store, tasks:{...redux-store.tasks,[action.todolistId]:redux-store.tasks[action.todolistId].filter(t => t.id !== action.id)}}
 //     case 'ADD-TASK':
 //       let newTask = {id: v1(), title: action.title, isDone: false}
-//       return {...state,
-//       tasks:{...state.tasks,[action.todolistId]:[newTask,...state.tasks[action.todolistId]]}}
+//       return {...redux-store,
+//       tasks:{...redux-store.tasks,[action.todolistId]:[newTask,...redux-store.tasks[action.todolistId]]}}
 //     case 'CHANGE-TITLE-TASK':
-//       return {...state,
-//         tasks:{...state.tasks,
-//           [action.todolistId]: state.tasks[action.todolistId].map(el=>el.id===action.id?{...el,title:action.newTitle}:el)}}
+//       return {...redux-store,
+//         tasks:{...redux-store.tasks,
+//           [action.todolistId]: redux-store.tasks[action.todolistId].map(el=>el.id===action.id?{...el,title:action.newTitle}:el)}}
 //     case 'CHANGE-FILTER':
-//       return {...state,
-//         todolists:state.todolists.map(el=>el.id===action.todolistId?{...el,filter:action.value}:el)}
+//       return {...redux-store,
+//         todolists:redux-store.todolists.map(el=>el.id===action.todolistId?{...el,filter:action.value}:el)}
 //     case 'CHANGE-TDL-TITLE':
-//       return {...state,
-//       todolists:state.todolists.map(el=>el.id===action.todolistId?{...el,title:action.newTitle}:el)}
+//       return {...redux-store,
+//       todolists:redux-store.todolists.map(el=>el.id===action.todolistId?{...el,title:action.newTitle}:el)}
 //     case 'ADD-TDL':
 //       let todolist: TodolistType = {id: v1(), title: action.title, filter: "all"};
-//       return {...state,
-//         todolists: [todolist, ...state.todolists], tasks: {[todolist.id]: [], ...state.tasks}}
+//       return {...redux-store,
+//         todolists: [todolist, ...redux-store.todolists], tasks: {[todolist.id]: [], ...redux-store.tasks}}
 //     case 'REMOVE-TDL':
-//       let todolistCopy = (state.todolists.filter(tl => tl.id !== action.id));
-//       delete state.tasks[action.id];
-//       return {...state, todolists:todolistCopy}
+//       let todolistCopy = (redux-store.todolists.filter(tl => tl.id !== action.id));
+//       delete redux-store.tasks[action.id];
+//       return {...redux-store, todolists:todolistCopy}
 //     case 'CHANGE-TASK-STATUS':
-//       return {...state,
-//       tasks:{...state.tasks,[action.todolistId]:state.tasks[action.todolistId].map(el=>el.id===action.id?{...el,isDone:action.isDone}:el)}}
+//       return {...redux-store,
+//       tasks:{...redux-store.tasks,[action.todolistId]:redux-store.tasks[action.todolistId].map(el=>el.id===action.id?{...el,isDone:action.isDone}:el)}}
 //     default:
-//       return state
+//       return redux-store
 //   }
 // }
 // export type ActionType =

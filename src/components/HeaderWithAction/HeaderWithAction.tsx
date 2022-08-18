@@ -16,7 +16,7 @@ import {
 import {AddItemComponent} from "../AddItemComponent/AddItemComponent";
 import {ErrorAlert} from "../ErrorAlert";
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "../../state/store";
+import {AppRootStateType} from "../../redux-store/store";
 import {RequestStatusType} from "../../reducers/app-reducer";
 import {logout} from "../../reducers/auth-reducer";
 

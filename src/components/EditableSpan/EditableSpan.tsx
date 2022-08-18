@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useState} from "react";
 import {useSelector} from "react-redux";
-import {AppRootStateType} from "../../state/store";
+import {AppRootStateType} from "../../redux-store/store";
 
 export type EditableSpanPropsType = {
   title: string

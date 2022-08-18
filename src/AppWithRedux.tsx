@@ -8,7 +8,7 @@ import {Login} from "./components/Login/Login";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {TodolistsList} from "./components/TodolistsList";
 import {authMe} from "./reducers/auth-reducer";
-import {AppRootStateType, useAppDispatch} from "./state/store";
+import {AppRootStateType, useAppDispatch} from "./redux-store/store";
 import {useSelector} from "react-redux";
 
 

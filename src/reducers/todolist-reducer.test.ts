@@ -42,7 +42,7 @@ test('Should be CHANGE_TODOLIST_TITLE', () => {
   expect(endState.length).toBe(2)
 })
 
-test('Todolists should be added to state', () => {
+test('Todolists should be added to redux-store', () => {
   let endState = todolistReducer([], setTodolistsAC(startState))
   expect(endState.length).toBe(2)
 })

@@ -2,7 +2,7 @@ import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import {Task} from "./Task";
 import {Provider, useSelector} from "react-redux";
-import {AppRootStateType, store} from "../../state/store";
+import {AppRootStateType, store} from "../../redux-store/store";
 import {TaskType} from "../../api/todolists-api";
 
 export default {

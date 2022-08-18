@@ -13,7 +13,7 @@ import {
 import {FilterValuesType} from "../../AppWithRedux";
 import {Task} from "./Task";
 import {TaskType} from "../../api/todolists-api";
-import {useAppDispatch} from "../../state/store";
+import {useAppDispatch} from "../../redux-store/store";
 import {RequestStatusType} from "../../reducers/app-reducer";
 
 

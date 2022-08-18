@@ -3,7 +3,7 @@ import {Box, Checkbox} from "@chakra-ui/react";
 import {EditableSpan} from "../EditableSpan/EditableSpan";
 import {DeleteIcon, EditIcon} from "@chakra-ui/icons";
 import {changeStatusTask, removeTask, updateTask} from "../../reducers/tasks-reducer";
-import {AppRootStateType, useAppDispatch} from "../../state/store";
+import {AppRootStateType, useAppDispatch} from "../../redux-store/store";
 import {useSelector} from "react-redux";
 import {RequestStatusType} from "../../reducers/app-reducer";
 
