@@ -64,7 +64,7 @@ export const logout = () =>
     authAPI.logout()
       .then(data => {
         if (data.data.resultCode === 0) {
-          dispatch(clearDataAC())
+          dispatch(clearDataAC({}))
           let payload = {id: 0, email: '', login: '', isAuth: false}
           dispatch(setAuthUserData(payload))
           dispatch(setAppStatusAC({status: 'succeeded'}))

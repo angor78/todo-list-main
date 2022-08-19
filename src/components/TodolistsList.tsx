@@ -12,7 +12,6 @@ export const TodolistsList = () => {
   let dispatch = useAppDispatch()
   const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
   const tasks = useSelector<AppRootStateType, AllTasksType>(state => state.tasks)
-  // const isInitialized = useSelector<AppRootStateType, boolean>(redux-store => redux-store.app.isInitialized)
   const isAuth = useSelector<AppRootStateType, boolean>(state => state.auth.isAuth)
   useEffect(() => {
     if (isAuth) {
