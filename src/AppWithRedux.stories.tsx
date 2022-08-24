@@ -1,16 +1,14 @@
-import {ComponentMeta, ComponentStory} from "@storybook/react";
+import { ComponentStory} from "@storybook/react";
 import AppWithRedux from "./AppWithRedux";
-import {Provider} from "react-redux";
-import {store} from "./redux-store/store";
+import {BrowserRouterDecorator, ReduxStoreProviderDecorator} from "./stories/ReduxStoreProviderDecorator";
 
 export default {
   title: 'Components/AppWithRedux',
   component: AppWithRedux,
+  decorators:[ReduxStoreProviderDecorator,BrowserRouterDecorator]
 
-} as ComponentMeta<typeof AppWithRedux>;
+}
 
-const Template: ComponentStory<typeof AppWithRedux> = (args) =><Provider store={store}> <AppWithRedux /></Provider>;
+export const Template: ComponentStory<typeof AppWithRedux> = (args) =><AppWithRedux/>
 
-export const AppWithReduxStory = Template.bind({});
-AppWithReduxStory.args = {
-};
+
