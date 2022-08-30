@@ -11816,7 +11816,7 @@ jest-pnp-resolver@^1.2.2:
 
 jest-puppeteer@^6.1.1:
   version "6.1.1"
-  resolved "https://registry.npmjs.org/jest-puppeteer/-/jest-puppeteer-6.1.1.tgz"
+  resolved "https://registry.yarnpkg.com/jest-puppeteer/-/jest-puppeteer-6.1.1.tgz#7d459c94efe45ac7d5085a9c499f7e727add9a6c"
   integrity sha512-cBOszleUpyipDMNYmcmH3x+687x03ZvOVz7W8X5y5TgD+j4MK+BcumwGdE1YwVS21kPLjJUu1pIdEzEDuFEBfA==
   dependencies:
     expect-puppeteer "^6.1.1"

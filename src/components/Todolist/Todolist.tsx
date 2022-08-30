@@ -8,7 +8,7 @@ import {
   updateTodolist
 } from "../../reducers/todolist-reducer";
 import {
-  createTask
+   createTaskTC
 } from "../../reducers/tasks-reducer";
 import {FilterValuesType} from "../../AppWithRedux";
 import {Task} from "./Task";
@@ -50,7 +50,7 @@ export const Todolist = React.memo((props: PropsType) => {
   })), [dispatch, props.id])
 
   const addTask = useCallback((newTitle: string) => {
-    dispatch(createTask(props.id, newTitle))
+    dispatch(createTaskTC({todolistId: props.id, title: newTitle}))
   }, [dispatch, props.id])
 
   const onChangeTodolistTitle = useCallback((newTitle: string) => {

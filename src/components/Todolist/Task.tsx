@@ -2,7 +2,7 @@ import React, {ChangeEvent, useCallback} from 'react';
 import {Box, Checkbox} from "@chakra-ui/react";
 import {EditableSpan} from "../EditableSpan/EditableSpan";
 import {DeleteIcon, EditIcon} from "@chakra-ui/icons";
-import {changeStatusTask, removeTask, updateTask} from "../../reducers/tasks-reducer";
+import {changeStatusTaskTC, removeTaskTC, updateTaskTC} from "../../reducers/tasks-reducer";
 import {AppRootStateType, useAppDispatch} from "../../redux-store/store";
 import {useSelector} from "react-redux";
 import {RequestStatusType} from "../../reducers/app-reducer";
@@ -19,13 +19,13 @@ type TaskPropsType = {
 
 export const Task = React.memo((props: TaskPropsType) => {
   const dispatch = useAppDispatch()
-  const onClickHandler = () => dispatch(removeTask(props.id, props.taskId))
+  const onClickHandler = () => dispatch(removeTaskTC({todolistId: props.id, taskId: props.taskId}))
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     let newIsDoneValue = e.currentTarget.checked ? 1 : 0;
-    dispatch(changeStatusTask(props.id, props.taskId, newIsDoneValue));
+    dispatch(changeStatusTaskTC({todolistId: props.id, taskId: props.taskId, status: newIsDoneValue}));
   }
   const onChangeTitleTask = useCallback((newTitle: string) => {
-    dispatch(updateTask(props.id, props.taskId, newTitle))
+    dispatch(updateTaskTC({todolistId: props.id, taskId: props.taskId, title: newTitle}))
   }, [props.taskId, dispatch, props.id])
 
   let status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
