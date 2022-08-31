@@ -2,7 +2,7 @@ import React from 'react';
 import {Box, Button, Checkbox, Container, FormControl, FormLabel, Input} from "@chakra-ui/react";
 import {useFormik} from "formik";
 import {useSelector} from "react-redux";
-import {login} from "../../reducers/auth-reducer";
+import {loginTC} from "../../reducers/auth-reducer";
 import {AppRootStateType, useAppDispatch} from "../../redux-store/store";
 import {Navigate} from "react-router-dom";
 
@@ -39,7 +39,7 @@ export const Login = () => {
     onSubmit: values => {
       // alert(JSON.stringify(values))
 
-      dispatch(login(values.email, values.password, values.rememberMe, true))
+      dispatch(loginTC({email: values.email, password: values.password, rememberMe: values.rememberMe, captcha: true}))
       formik.resetForm()
     },
   })

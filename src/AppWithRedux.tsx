@@ -7,9 +7,9 @@ import {TaskType} from "./api/todolists-api";
 import {Login} from "./components/Login/Login";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {TodolistsList} from "./components/TodolistsList";
-import {authMe} from "./reducers/auth-reducer";
 import {AppRootStateType, useAppDispatch} from "./redux-store/store";
 import {useSelector} from "react-redux";
+import {authMeTC} from "./reducers/auth-reducer";
 
 
 export type FilterValuesType = "all" | "active" | "completed";
@@ -28,7 +28,7 @@ function AppWithRedux() {
   }, [dispatch])
 
   useEffect(() => {
-    dispatch(authMe())
+    dispatch(authMeTC({}))
   }, [dispatch])
 
   const isInitialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)

@@ -18,7 +18,7 @@ import {ErrorAlert} from "../ErrorAlert";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../redux-store/store";
 import {RequestStatusType} from "../../reducers/app-reducer";
-import {logout} from "../../reducers/auth-reducer";
+import {logoutTC} from "../../reducers/auth-reducer";
 
 
 const Links = ['Dashboard', 'Projects', 'Team'];
@@ -49,7 +49,7 @@ export default function HeaderWithAction(props: HeaderWithActionType) {
   const isAuth = useSelector<AppRootStateType, boolean>(state => state.auth.isAuth)
 
   const onLogout = () => {
-    dispatch(logout())
+    dispatch(logoutTC({}))
   }
   return (
     <>

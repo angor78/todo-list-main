@@ -12,6 +12,8 @@ type InitialStateType = {
   error: string | null
   isInitialized: boolean
 }
+
+//actions with redux toolkit
 const slice = createSlice({
   name: 'app',
   initialState: initialState,
