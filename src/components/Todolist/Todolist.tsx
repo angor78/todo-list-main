@@ -4,8 +4,8 @@ import {EditableSpan} from "../EditableSpan/EditableSpan";
 import {Box, Button, Heading} from "@chakra-ui/react";
 import {DeleteIcon, EditIcon} from "@chakra-ui/icons";
 import {
-  changeTodolistFilterAC, deleteTodolist,
-  updateTodolist
+  changeTodolistFilterAC, deleteTodolistTC,
+  updateTodolistTC
 } from "../../reducers/todolist-reducer";
 import {
    createTaskTC
@@ -28,7 +28,7 @@ type PropsType = {
 export const Todolist = React.memo((props: PropsType) => {
   let dispatch = useAppDispatch()
 
-  const removeTodolist = () => dispatch(deleteTodolist(props.id))
+  const removeTodolist = () => dispatch(deleteTodolistTC({todolistId: props.id}))
   let tasksForTodolist = props.tasks
   if (props.filter === "active") {
     tasksForTodolist = props.tasks.filter((t: TaskType) => t.status === 0);
@@ -54,7 +54,7 @@ export const Todolist = React.memo((props: PropsType) => {
   }, [dispatch, props.id])
 
   const onChangeTodolistTitle = useCallback((newTitle: string) => {
-    dispatch(updateTodolist(props.id, newTitle))
+    dispatch(updateTodolistTC({todolistId:props.id, title:newTitle}))
   }, [dispatch, props.id])
 
 

@@ -2,7 +2,7 @@ import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import {ChakraProvider, Container, Progress} from "@chakra-ui/react"
 import HeaderWithAction from "./components/HeaderWithAction/HeaderWithAction";
-import {createTodolist} from "./reducers/todolist-reducer";
+import {createTodolistTC} from "./reducers/todolist-reducer";
 import {TaskType} from "./api/todolists-api";
 import {Login} from "./components/Login/Login";
 import {Navigate, Route, Routes} from "react-router-dom";
@@ -23,7 +23,7 @@ function AppWithRedux() {
 
 
   const addTodolist = useCallback((newTitle: string) => {
-    let action = createTodolist(newTitle)
+    let action = createTodolistTC({title: newTitle})
     dispatch(action)
   }, [dispatch])
 

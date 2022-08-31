@@ -3,7 +3,7 @@ import {Box} from "@chakra-ui/react";
 import {Todolist} from "./Todolist/Todolist";
 import {useSelector} from "react-redux";
 import {AppRootStateType, useAppDispatch} from "../redux-store/store";
-import {fetchTodolists, TodolistDomainType} from "../reducers/todolist-reducer";
+import {fetchTodolistsTC, TodolistDomainType} from "../reducers/todolist-reducer";
 import {AllTasksType} from "../AppWithRedux";
 import {Navigate} from "react-router-dom";
 
@@ -15,7 +15,7 @@ export const TodolistsList = () => {
   const isAuth = useSelector<AppRootStateType, boolean>(state => state.auth.isAuth)
   useEffect(() => {
     if (isAuth) {
-      dispatch(fetchTodolists())
+      dispatch(fetchTodolistsTC({}))
     }
   }, [isAuth, dispatch])
 
